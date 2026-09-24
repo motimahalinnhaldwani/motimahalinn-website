@@ -13,11 +13,10 @@ import { prefersReducedMotion } from "./tier";
  *   (steam, stars, the specials ticker) pause when it is off, so nothing
  *   off-screen keeps the compositor awake.
  */
-export function useInView<T extends HTMLElement>(
-  opts: string | { rootMargin?: string; toggle?: boolean } = {},
-) {
-  const { rootMargin = "0px 0px -8% 0px", toggle = false } =
-    typeof opts === "string" ? { rootMargin: opts } : opts;
+export function useInView<T extends HTMLElement>({
+  rootMargin = "0px 0px -8% 0px",
+  toggle = false,
+}: { rootMargin?: string; toggle?: boolean } = {}) {
   const ref = useRef<T>(null);
 
   useEffect(() => {

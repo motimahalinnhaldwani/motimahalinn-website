@@ -1,6 +1,6 @@
 import { site, amenities, distances, meals } from "@/content/site";
 import { rooms } from "@/content/rooms";
-import { restaurant, cafe } from "@/content/menu";
+import { restaurant } from "@/content/menu";
 
 const postal = {
   "@type": "PostalAddress",
@@ -68,29 +68,9 @@ export function restaurantSchema() {
         "Saturday",
         "Sunday",
       ],
-      opens: m.from.padStart(5, "0"),
-      closes: m.to.padStart(5, "0"),
+      opens: `${String(Math.floor(m.start / 60)).padStart(2, "0")}:${String(m.start % 60).padStart(2, "0")}`,
+      closes: `${String(Math.floor(m.end / 60)).padStart(2, "0")}:${String(m.end % 60).padStart(2, "0")}`,
     })),
-  };
-}
-
-export function cafeSchema() {
-  return {
-    "@context": "https://schema.org",
-    "@type": "CafeOrCoffeeShop",
-    "@id": `${site.url}/dining/cafe#cafe`,
-    name: cafe.name,
-    servesCuisine: [...cafe.cuisines],
-    address: postal,
-    telephone: site.phone,
-    priceRange: "₹₹",
-    url: `${site.url}/dining/cafe`,
-    openingHoursSpecification: {
-      "@type": "OpeningHoursSpecification",
-      dayOfWeek: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
-      opens: cafe.hours.from.padStart(5, "0"),
-      closes: cafe.hours.to.padStart(5, "0"),
-    },
   };
 }
 
@@ -108,7 +88,7 @@ export function localBusinessSchema() {
       latitude: site.geo.lat,
       longitude: site.geo.lng,
     },
-    hasMap: `https://www.google.com/maps/search/?api=1&query=${site.geo.lat},${site.geo.lng}`,
+    hasMap: site.mapsUrl,
   };
 }
 

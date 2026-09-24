@@ -1,110 +1,45 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/ui/PageHeader";
-import EnquiryForm from "@/components/ui/EnquiryForm";
-import PriceCompare from "@/components/ui/PriceCompare";
-import TrustRow from "@/components/ui/TrustRow";
-import WhatsAppCTA, { CallCTA } from "@/components/ui/WhatsAppCTA";
-import { rooms } from "@/content/rooms";
-import { bookDirect, site } from "@/content/site";
-import { rupees } from "@/lib/format";
+import BookingComposer from "@/components/ui/BookingComposer";
+import { site } from "@/content/site";
 
 export const metadata: Metadata = {
   title: "Book direct",
-  description:
-    "Book a room at Moti Mahal Inn, Haldwani, direct. Same room, better price, confirmed within 30 minutes by a person. From ₹1,750 a night.",
+  description: `Book a room at ${site.name}, Haldwani, directly with the front desk — by WhatsApp or by phone on ${site.phoneDisplay} — for an exclusive rate lower than the booking sites.`,
   alternates: { canonical: "/book" },
-  robots: { index: true, follow: true },
 };
 
-export default async function BookPage({
-  searchParams,
-}: {
-  searchParams: Promise<Record<string, string | string[] | undefined>>;
-}) {
-  const sp = await searchParams;
-  const one = (k: string) => (Array.isArray(sp[k]) ? sp[k]?.[0] : sp[k]) as string | undefined;
-
-  const defaults = {
-    checkIn: one("in"),
-    checkOut: one("out"),
-    adults: one("adults") ? Number(one("adults")) : undefined,
-    room: rooms.some((r) => r.slug === one("room")) ? one("room") : undefined,
-  };
-
+export default function BookPage() {
   return (
     <>
       <PageHeader
         eyebrow="Book direct"
-        title={bookDirect.headline}
-        lede={`We confirm ${bookDirect.confirmWindow}. Not an automatic email — somebody reads it, checks the board, and writes back. If you would rather just talk, the number is below and it is answered.`}
+        title="Call us, or send us a WhatsApp."
+        lede={`Choose your dates and we will write the message for you. It goes straight to the front desk on ${site.phoneDisplay}, and they reply to confirm the room and your exclusive direct rate, lower than on any booking site, because there is no commission in the middle.`}
         trail={[
           { name: "Home", href: "/" },
           { name: "Book", href: "/book" },
         ]}
-      >
-        <TrustRow className="mt-9" />
-      </PageHeader>
-
-      <div className="shell mt-12 grid gap-10 pb-16 lg:grid-cols-[1.15fr_0.85fr] lg:gap-16">
-        <EnquiryForm defaults={defaults} />
-
-        <aside>
-          <h2 className="eyebrow">The rates</h2>
-          <ul className="mt-5 space-y-5">
-            {rooms.map((r) => (
-              <li key={r.slug} className="rule-t pt-4">
-                <div className="flex items-baseline justify-between gap-4">
-                  <h3 className="font-display text-2xl text-rice">{r.name}</h3>
-                  <p className="tnum shrink-0 font-display text-2xl text-brass">
-                    {rupees(r.from)}
-                  </p>
-                </div>
-                <p className="mt-1 text-[0.8125rem] text-mist/65">
-                  <span className="tnum">{r.sqft}</span> sq ft · {r.beds} · sleeps{" "}
-                  <span className="tnum">{r.sleeps}</span>
-                </p>
-              </li>
-            ))}
-          </ul>
-          <p className="mt-4 text-[0.75rem] text-mist/65">
-            Per night, before taxes. Rates move with the season; the desk will confirm the
-            exact figure for your dates.
-          </p>
-
-          <div className="mt-10 rounded-sm border border-brass/25 p-6">
-            <h2 className="eyebrow">Faster still</h2>
-            <p className="mt-3 text-[0.9375rem] leading-relaxed text-mist/75">
-              WhatsApp is usually the quickest way to reach the desk, and it is how most
-              of our guests book.
+      />
+      <div className="shell mt-12 pb-24">
+        <BookingComposer />
+        <ul className="mt-14 grid gap-6 text-[0.9375rem] text-mist/75 md:grid-cols-3">
+          <li className="rule-t pt-4">
+            <p className="font-display text-xl text-rice">Arriving late?</p>
+            <p className="mt-2">Say so in the message. The front desk is open all night.</p>
+          </li>
+          <li className="rule-t pt-4">
+            <p className="font-display text-xl text-rice">Travelling as a family?</p>
+            <p className="mt-2">Every room takes up to three guests.</p>
+          </li>
+          <li className="rule-t pt-4">
+            <p className="font-display text-xl text-rice">Check in and out</p>
+            <p className="mt-2">
+              From <span className="tnum">{site.checkInText}</span>, by <span className="tnum">{site.checkOutText}</span>.
             </p>
-            <div className="mt-5 flex flex-col items-start gap-4">
-              <WhatsAppCTA ctx={{ intent: "stay" }} />
-              <CallCTA />
-              <a
-                href={`mailto:${site.email}`}
-                className="text-[0.8125rem] text-rice/70 underline decoration-brass/40 underline-offset-4 hover:text-rice"
-              >
-                {site.email}
-              </a>
-            </div>
-          </div>
-
-          <div className="mt-6 rounded-sm border border-brass/15 p-6">
-            <h2 className="eyebrow">Before you send it</h2>
-            <ul className="mt-4 space-y-3 text-[0.875rem] leading-snug text-mist/70">
-              <li>Arriving after eleven at night? Say so — the kitchen stays up for it.</li>
-              <li>Leaving before dawn for Kainchi or Corbett? We will have chai ready.</li>
-              <li>Want a quiet room at the back? Ask. It costs nothing extra.</li>
-              <li>
-                Check in {site.checkIn}, check out {site.checkOut}. Both are movable if the
-                floor is not full.
-              </li>
-            </ul>
-          </div>
-        </aside>
+          </li>
+        </ul>
       </div>
-
-      <PriceCompare />
     </>
   );
 }

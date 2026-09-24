@@ -11,11 +11,11 @@ import type { Shot, Tone } from "@/content/images";
  */
 
 const TONES: Record<Tone, { from: string; to: string; ink: string }> = {
-  plains: { from: "#1b1916", to: "#3a2a1e", ink: "#c08a3e" },
-  lamp: { from: "#161310", to: "#4a331d", ink: "#d8a43c" },
-  hill: { from: "#1a241f", to: "#24382e", ink: "#c9d4d2" },
-  cream: { from: "#f1e7da", to: "#ddcab3", ink: "#5a3826" },
-  cocoa: { from: "#2a1a12", to: "#3a2318", ink: "#c08a3e" },
+  plains: { from: "#f4ecdd", to: "#e6d6ba", ink: "#7d540b" },
+  lamp: { from: "#f6e9cc", to: "#e8c98a", ink: "#6b4708" },
+  hill: { from: "#efe9df", to: "#d9d0c2", ink: "#4a443c" },
+  cream: { from: "#f1e6d3", to: "#dccab0", ink: "#4a443c" },
+  cocoa: { from: "#232322", to: "#34322f", ink: "#d9a441" },
 };
 
 /** A stable small integer from the slot id, so each stand-in is its own drawing
@@ -94,11 +94,14 @@ export default function Frame({
 }) {
   const tone = TONES[img.tone];
   const ratio = `${img.width} / ${img.height}`;
+  /* `relative` and `absolute` are both position utilities, and the stylesheet
+     order — not the class order — decides which wins. */
+  const pos = /\babsolute\b/.test(className) ? "" : "relative";
 
   if (img.src) {
     return (
       <figure
-        className={`relative overflow-hidden ${rounded} ${className}`}
+        className={`${pos} overflow-hidden ${rounded} ${className}`}
         style={{ aspectRatio: ratio, backgroundColor: tone.from }}
       >
         <Image
@@ -115,7 +118,7 @@ export default function Frame({
 
   return (
     <div
-      className={`relative overflow-hidden ${rounded} ${className}`}
+      className={`${pos} overflow-hidden ${rounded} ${className}`}
       style={{
         aspectRatio: ratio,
         background: `linear-gradient(150deg, ${tone.from} 0%, ${tone.to} 100%)`,
@@ -160,7 +163,7 @@ export function Evidence({
   if (!img.src) return <Frame img={img} className={className} />;
 
   return (
-    <figure className={`group relative ${className}`}>
+    <figure className={`group ${/\babsolute\b/.test(className) ? "" : "relative"} ${className}`}>
       <div
         className="relative overflow-hidden rounded-sm ring-1 ring-brass/25"
         style={{ aspectRatio: `${img.width} / ${img.height}` }}

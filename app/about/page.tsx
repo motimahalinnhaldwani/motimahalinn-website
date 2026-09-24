@@ -3,12 +3,13 @@ import PageHeader from "@/components/ui/PageHeader";
 import Frame from "@/components/ui/Frame";
 import AipanThreshold from "@/components/motion/AipanThreshold";
 import { Button } from "@/components/ui/Button";
+import FounderNote from "@/components/sections/FounderNote";
 import { images } from "@/content/images";
 
 export const metadata: Metadata = {
   title: "The house",
   description:
-    "Moti Mahal means Pearl Palace. A family-run inn on Nainital Road, Haldwani, at the threshold between the plains and the Kumaon hills.",
+    "Moti Mahal means Pearl Palace. A family-run inn on Nainital Road, Haldwani, from the family behind Moti Mahal Restaurant (since 1972), run today by Joy Arora.",
   alternates: { canonical: "/about" },
 };
 
@@ -39,11 +40,11 @@ export default function AboutPage() {
             It is a threshold.
           </p>
           <p>
-            We think that is the most useful thing about it. A threshold has a specific
-            job: to be easy to find, easy to leave, warm at eleven at night and awake at
-            half past five in the morning. Everything here is arranged around that — the
-            kitchen hours, the quiet rooms held at the back, the chai before dawn for the
-            people driving to Kainchi.
+            We think that is the most useful thing about it. A place like this has a
+            simple job: a clean, spacious room three hundred metres from where the bus
+            stops, with a proper meal close by. That is why our own restaurant is just
+            down the same road, why food comes to the rooms until 10:45 at night, and
+            why the front desk is awake around the clock.
           </p>
         </div>
 
@@ -52,36 +53,15 @@ export default function AboutPage() {
         </div>
       </section>
 
-      <AipanThreshold variant="chowki" label="The people" />
+      <AipanThreshold variant="chowki" label="Since 1972" />
 
-      <section className="shell grid gap-12 pb-20 lg:grid-cols-[0.9fr_1fr] lg:gap-16">
-        <Frame img={images.staff} className="w-full" sizes="(max-width: 1024px) 100vw, 42vw" />
+      <FounderNote />
 
-        <div>
-          <h2 className="display-md max-w-[16ch] text-rice">
-            Trust is the product here.
-          </h2>
-          <div className="measure mt-5 space-y-5 text-[1.0625rem] leading-[1.65] text-mist/80">
-            <p>
-              At this size and in this town, a hotel is not a brand. It is the person at
-              the desk at midnight, the cook who has made the same dal for a decade, and
-              whether the phone gets answered. So this page will carry their photographs
-              and their names, rather than a stock image of a lobby.
-            </p>
-            <p>
-              The founding story — when the doors opened, who runs it, and why the name is
-              Moti Mahal — belongs here too, in the family&rsquo;s own words rather than
-              ours. It is the single most valuable thing this site is still missing.
-            </p>
-          </div>
-
-          <div className="mt-9 flex flex-wrap gap-3">
-            <Button href="/rooms">See the rooms</Button>
-            <Button href="/contact" variant="ghost">
-              Come and find us
-            </Button>
-          </div>
-        </div>
+      <section className="shell flex flex-wrap gap-3 pb-20">
+        <Button href="/rooms">See the rooms</Button>
+        <Button href="/contact" variant="ghost">
+          Come and find us
+        </Button>
       </section>
     </>
   );

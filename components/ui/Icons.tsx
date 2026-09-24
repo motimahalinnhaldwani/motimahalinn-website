@@ -86,13 +86,54 @@ const glyphs: Record<string, React.ReactNode> = {
       <circle cx="7.5" cy="9.5" r="1.8" />
     </>
   ),
+  plane: <path d="M10.5 20.5 12 15l-5-1.5-2 2L3.5 15l2.5-3L3.5 9l1.5-.5 2 2L12 9l-1.5-5.5 1.5-.5 4 6.5 4-.5a1.5 1.5 0 0 1 0 3l-4-.5-4 6.5Z" />,
+  bus: (
+    <>
+      <rect x="4.5" y="3.5" width="15" height="14" rx="2" />
+      <path d="M4.5 11h15M7 17.5V20M17 17.5V20" />
+      <circle cx="8" cy="14.5" r=".8" />
+      <circle cx="16" cy="14.5" r=".8" />
+    </>
+  ),
+  bolt: <path d="M13 2.5 5 13.5h6l-1 8 8-11h-6l1-8Z" />,
+  lift: (
+    <>
+      <rect x="4.5" y="3" width="15" height="18" rx="1.5" />
+      <path d="M12 3v18M7.5 9.5 9 8l1.5 1.5M13.5 14.5 15 16l1.5-1.5" />
+    </>
+  ),
+  access: (
+    <>
+      <circle cx="11" cy="4.5" r="1.6" />
+      <path d="M11 7.5v6h5l2 5M11 10.5h4.5" />
+      <path d="M8 11.2a5 5 0 1 0 6.8 6.8" />
+    </>
+  ),
+  temple: <path d="M12 2.5v2M8 9.5 12 4.5l4 5M6.5 9.5h11M7.5 9.5v11M16.5 9.5v11M4 20.5h16M10.5 20.5v-5h3v5" />,
+  sparkle: <path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8ZM18.5 16l.7 1.8L21 18.5l-1.8.7-.7 1.8-.7-1.8-1.8-.7 1.8-.7Z" />,
+  expand: <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5M4 4l6 6M20 4l-6 6M4 20l6-6M20 20l-6-6" />,
+  kettle: (
+    <>
+      <path d="M6 9.5h10l-1 10H7Z" />
+      <path d="M16 11.5h1.5a2 2 0 0 1 0 4H15.5M6 11 3.5 8.5M8.5 9.5a2.5 2.5 0 0 1 5 0" />
+    </>
+  ),
   dot: <circle cx="12" cy="12" r="2.4" />,
 };
 
 const MATCH: [RegExp, string][] = [
+  [/kettle|tea maker/i, "kettle"],
+  [/airport|pickup/i, "plane"],
+  [/public transport|\bbus\b/i, "bus"],
+  [/power/i, "bolt"],
+  [/lift|elevator/i, "lift"],
+  [/wheelchair/i, "access"],
+  [/kainchi|temple|trip/i, "temple"],
+  [/hygiene/i, "sparkle"],
+  [/spacious/i, "expand"],
   [/air cond|^ac\b/i, "ac"],
   [/wi-?fi/i, "wifi"],
-  [/hot water|shower/i, "water"],
+  [/water|shower/i, "water"],
   [/television|\btv\b/i, "tv"],
   [/desk/i, "desk"],
   [/room service|bell/i, "bell"],

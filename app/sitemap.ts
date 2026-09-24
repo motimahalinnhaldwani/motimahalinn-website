@@ -1,29 +1,25 @@
 import type { MetadataRoute } from "next";
 import { site } from "@/content/site";
 import { rooms } from "@/content/rooms";
-import { journeys } from "@/content/journeys";
+
+export const dynamic = "force-static";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
-  const page = (path: string, priority: number, changeFrequency: "daily" | "weekly" | "monthly") => ({
+  const page = (path: string, priority: number) => ({
     url: `${site.url}${path}`,
     lastModified: now,
-    changeFrequency,
+    changeFrequency: "monthly" as const,
     priority,
   });
-
   return [
-    page("/", 1, "weekly"),
-    page("/rooms", 0.9, "monthly"),
-    ...rooms.map((r) => page(`/rooms/${r.slug}`, 0.8, "monthly")),
-    page("/dining/restaurant", 0.8, "monthly"),
-    page("/dining/cafe", 0.7, "monthly"),
-    page("/chocolate", 0.6, "monthly"),
-    page("/journeys", 0.8, "monthly"),
-    ...journeys.map((j) => page(`/journeys/${j.slug}`, 0.9, "monthly")),
-    page("/gallery", 0.5, "monthly"),
-    page("/about", 0.5, "monthly"),
-    page("/contact", 0.7, "monthly"),
-    page("/book", 0.9, "weekly"),
+    page("/", 1),
+    page("/rooms", 0.9),
+    ...rooms.map((r) => page(`/rooms/${r.slug}`, 0.8)),
+    page("/dining/restaurant", 0.9),
+    page("/book", 0.9),
+    page("/contact", 0.7),
+    page("/gallery", 0.5),
+    page("/about", 0.5),
   ];
 }

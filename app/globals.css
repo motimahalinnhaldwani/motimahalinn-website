@@ -3,27 +3,29 @@
 
 /* ───────────────────────────────────────────────────────────────
    MOTI MAHAL INN — token layer
-   A pearl holding the Kumaon hills.
+   A warm, quiet room on the road to the hills.
    ─────────────────────────────────────────────────────────────── */
 
 @theme {
-  --color-ink: #0f0e0c;
-  --color-ink-soft: #1b1916;
-  --color-geru: #9c3b24;
-  --color-rice: #f4ede2;
-  --color-brass: #c08a3e;
-  --color-haldu: #d8a43c;
-  --color-deodar: #24382e;
-  --color-mist: #c9d4d2;
+  --color-ink: #fbf7ef;
+  --color-ink-soft: #f3ecdf;
+  --color-geru: #d0701f;
+  --color-rice: #1f1e1c;
+  --color-brass: #7d540b;
+  --color-haldu: #f2c14e;
+  --color-deodar: #efe4d0;
+  --color-mist: #221f1c;
 
-  --color-nacre-1: #e8d9c5;
-  --color-nacre-2: #bfd8d0;
-  --color-nacre-3: #d8c3e0;
+  --color-nacre-1: #eadcc4;
+  --color-nacre-2: #e6c98f;
+  --color-nacre-3: #d9c7b0;
 
-  /* café — the tonal switch */
-  --color-cream: #f6efe6;
-  --color-cocoa: #3a2318;
-  --color-cocoa-soft: #6b452f;
+  /* light panels — menu card, warm beige with charcoal ink */
+  --color-gold: #e2a93b;
+  --color-charcoal: #1f1e1c;
+  --color-cream: #efe4d1;
+  --color-cocoa: #2b2a28;
+  --color-cocoa-soft: #5b544b;
 
   --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, sans-serif;
@@ -36,11 +38,38 @@
 
 :root {
   --grain-url: url('/textures/grain.svg');
+  /* The fixed nav's height — the hero starts below it, so the nav never
+     covers the photograph. Measured: 73px on phones, 87–89px from 640px. */
+  --nav-h: 73px;
 
   --rule: color-mix(in oklab, var(--color-brass) 28%, transparent);
   --measure: 68ch;
 
+  color-scheme: light;
+}
+
+/* Charcoal accents — footer, the gateway map, the booking preview. */
+.dark-panel {
+  --color-ink: #1c1c1d;
+  --color-ink-soft: #262627;
+  --color-rice: #f5ecdc;
+  --color-brass: #d9a441;
+  --color-mist: #d8cfc0;
+  --rule: color-mix(in oklab, #d9a441 28%, transparent);
+  background-color: var(--color-ink);
+  color: var(--color-rice);
   color-scheme: dark;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --nav-h: 88px;
+  }
+}
+@media (min-width: 1024px) {
+  :root {
+    --nav-h: 87px;
+  }
 }
 
 @layer base {
@@ -117,6 +146,12 @@
   /* Never remove it. §7 */
   :focus:not(:focus-visible) {
     outline: none;
+  }
+
+  /* Chromium focuses the date segments, not the input — ring the whole field. */
+  input[type="date"]:focus-within {
+    outline: 2px solid var(--color-brass);
+    outline-offset: 2px;
   }
 
   img,
@@ -197,19 +232,6 @@
     color: color-mix(in oklab, var(--color-rice) 82%, transparent);
   }
 
-  /* ── The nacre gradient. Never carries body copy. §7 ────────── */
-  .nacre {
-    background: linear-gradient(
-      104deg,
-      var(--color-nacre-1) 0%,
-      var(--color-nacre-2) 38%,
-      var(--color-nacre-3) 68%,
-      var(--color-nacre-1) 100%
-    );
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-  }
 
   /* ── Brass rules and frames ────────────────────────────────── */
   .rule-t {
@@ -218,12 +240,6 @@
 
   .rule-b {
     border-bottom: 1px solid var(--rule);
-  }
-
-  /* ── Kholi: the carved doorframe arch used as an image mask ── */
-  .kholi {
-    --kholi-r: 46%;
-    clip-path: inset(0 round var(--kholi-r) var(--kholi-r) 3px 3px);
   }
 
   .shell {
@@ -259,7 +275,7 @@
         180deg,
         var(--color-ink) 0%,
         var(--color-ink) 22%,
-        #141a16 62%,
+        #f7f0e3 62%,
         var(--color-deodar) 100%
       );
     /* §3.3 — grain, blended against this element's own gradient rather than
@@ -277,10 +293,10 @@
     pointer-events: none;
     background: linear-gradient(
       180deg,
-      color-mix(in oklab, #3a2a1e 34%, transparent) 0%,
+      color-mix(in oklab, #f2c14e 10%, transparent) 0%,
       transparent 34%,
       transparent 62%,
-      color-mix(in oklab, #9fb3ae 26%, transparent) 100%
+      color-mix(in oklab, #e6d3b0 20%, transparent) 100%
     );
   }
 
@@ -312,9 +328,6 @@
     transition: none !important;
   }
 
-  .grain {
-    display: none;
-  }
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -352,13 +365,8 @@
     height: 18px;
     border-radius: 999px;
     pointer-events: none;
-    background: linear-gradient(
-      120deg,
-      var(--color-nacre-1),
-      var(--color-nacre-2) 55%,
-      var(--color-nacre-3)
-    );
-    mix-blend-mode: difference;
+    border: 1.5px solid var(--color-haldu);
+    background: color-mix(in oklab, var(--color-haldu) 18%, transparent);
     transition:
       width 400ms var(--ease-out-expo),
       height 400ms var(--ease-out-expo),
@@ -389,60 +397,6 @@
 }
 
 /* ── Route veil §5.7 ──────────────────────────────────────────── */
-.route-veil {
-  position: fixed;
-  inset: 0;
-  z-index: 80;
-  display: grid;
-  place-items: center;
-  background: var(--color-geru);
-  color: color-mix(in oklab, var(--color-rice) 88%, transparent);
-  pointer-events: none;
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 340ms var(--ease-in-out-soft);
-}
-
-.route-veil[data-phase="idle"] {
-  clip-path: inset(0 0 100% 0);
-  visibility: hidden;
-}
-
-.route-veil[data-phase="cover"],
-.route-veil[data-phase="hold"] {
-  clip-path: inset(0 0 0 0);
-  pointer-events: all;
-}
-
-.route-veil[data-phase="reveal"] {
-  clip-path: inset(100% 0 0 0);
-}
-
-.route-veil-motif {
-  width: clamp(7rem, 22vw, 13rem);
-  height: clamp(7rem, 22vw, 13rem);
-  opacity: 0;
-  transform: scale(0.9);
-  transition:
-    opacity 260ms var(--ease-out-expo) 60ms,
-    transform 520ms var(--ease-out-expo) 60ms;
-}
-
-.route-veil[data-phase="cover"] .route-veil-motif,
-.route-veil[data-phase="hold"] .route-veil-motif {
-  opacity: 1;
-  transform: scale(1);
-}
-
-.route-veil-bel {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 12%;
-  height: 2.5rem;
-  width: 100%;
-  opacity: 0.5;
-}
-
 /* ── Marquee §7 ───────────────────────────────────────────────── */
 @keyframes mmi-marquee {
   from {
@@ -465,32 +419,6 @@
   animation-play-state: paused;
 }
 
-/* ── Tilt on the journey cards §6 ─────────────────────────────── */
-.tilt {
-  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg));
-  transition: transform 600ms var(--ease-out-expo);
-}
-
-.sweep::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    115deg,
-    transparent 38%,
-    color-mix(in oklab, var(--color-brass) 42%, transparent) 50%,
-    transparent 62%
-  );
-  opacity: 0;
-  transition: opacity 500ms var(--ease-out-expo);
-  pointer-events: none;
-}
-
-.sweep:hover::after,
-.sweep:focus-within::after {
-  opacity: 1;
-}
 
 @media (prefers-reduced-motion: reduce) {
   .marquee {
@@ -498,221 +426,10 @@
     width: 100%;
   }
 
-  .route-veil {
-    display: none;
-  }
-
   .cursor-dot {
     display: none;
   }
 
-  .tilt {
-    transform: none;
-  }
-
-  .sweep::after {
-    display: none;
-  }
-}
-
-/* ───────────────────────────────────────────────────────────────
-   THE PEARL §2.1
-   A pearl is an irritant wrapped in layer after layer of nacre until it
-   becomes luminous. It holds light differently from every angle.
-
-   This is the Tier B/C pearl: layered gradients, no WebGL, no bytes.
-   Phase 3 mounts the R3F sphere on top of it and cross-fades — the poster
-   is always here first, so the hero is never a blank canvas (§6).
-   ─────────────────────────────────────────────────────────────── */
-
-@layer components {
-  .pearl {
-    position: relative;
-    aspect-ratio: 1;
-    border-radius: 999px;
-    overflow: hidden;
-    isolation: isolate;
-    background: radial-gradient(
-      circle at 33% 25%,
-      #fffdfa 0%,
-      #f0e4d3 11%,
-      #d2e2db 27%,
-      #a3bbbd 44%,
-      #6a7d83 61%,
-      #333e45 78%,
-      #171d22 92%,
-      #0c1013 100%
-    );
-    box-shadow:
-      inset -18px -22px 64px rgba(0, 0, 0, 0.72),
-      inset 12px 14px 44px rgba(255, 255, 255, 0.2),
-      0 0 140px color-mix(in oklab, var(--color-nacre-2) 22%, transparent),
-      0 0 0 1px rgba(232, 217, 197, 0.06);
-  }
-
-  /* Thin-film iridescence. The scroll turns the outer shell; time turns the
-     inner film. Together they never repeat the same angle twice. */
-  .pearl-shell {
-    position: absolute;
-    inset: -30%;
-    transform: rotate(calc(var(--p, 0) * 420deg));
-  }
-
-  .pearl-nacre {
-    position: absolute;
-    inset: 0;
-    background: conic-gradient(
-      from 0deg,
-      var(--color-nacre-1),
-      var(--color-nacre-2) 16%,
-      var(--color-nacre-3) 33%,
-      var(--color-nacre-1) 50%,
-      var(--color-nacre-2) 66%,
-      var(--color-nacre-3) 83%,
-      var(--color-nacre-1)
-    );
-    mix-blend-mode: overlay;
-    opacity: 0.85;
-    filter: blur(13px) saturate(1.5);
-    animation: pearl-turn 38s linear infinite;
-  }
-
-  /* The Kumaon hills, inside the pearl. Replaced in Phase 3 by a real
-     equirectangular environment map of the Shivalik foothills at dawn. */
-  .pearl-horizon {
-    position: absolute;
-    inset: 0;
-    background:
-      linear-gradient(
-        178deg,
-        transparent 40%,
-        color-mix(in oklab, var(--color-deodar) 55%, transparent) 54%,
-        color-mix(in oklab, var(--color-ink) 70%, transparent) 78%
-      ),
-      radial-gradient(
-        70% 30% at 50% 58%,
-        color-mix(in oklab, var(--color-haldu) 40%, transparent) 0%,
-        transparent 70%
-      );
-    mix-blend-mode: soft-light;
-    opacity: 0.9;
-  }
-
-  .pearl-spec {
-    position: absolute;
-    left: 26%;
-    top: 20%;
-    width: 22%;
-    height: 16%;
-    border-radius: 999px;
-    background: radial-gradient(circle, rgba(255, 255, 255, 0.92), transparent 70%);
-    filter: blur(6px);
-  }
-
-  .pearl-rim {
-    position: absolute;
-    inset: 0;
-    border-radius: 999px;
-    background: radial-gradient(
-      circle at 68% 76%,
-      color-mix(in oklab, var(--color-brass) 42%, transparent) 0%,
-      transparent 46%
-    );
-    mix-blend-mode: screen;
-    opacity: 0.55;
-  }
-}
-
-@keyframes pearl-turn {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-/* ── Dust in the doorway ──────────────────────────────────────── */
-@keyframes mote-drift {
-  0% {
-    transform: translate3d(0, 0, 0);
-    opacity: 0;
-  }
-  15% {
-    opacity: 0.5;
-  }
-  85% {
-    opacity: 0.35;
-  }
-  100% {
-    transform: translate3d(14px, -120px, 0);
-    opacity: 0;
-  }
-}
-
-.mote {
-  position: absolute;
-  width: 2px;
-  height: 2px;
-  border-radius: 999px;
-  background: var(--color-nacre-1);
-  animation: mote-drift var(--mote-dur, 14s) linear infinite;
-  animation-delay: var(--mote-delay, 0s);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pearl-nacre {
-    animation: none;
-  }
-  .pearl-shell {
-    transform: none;
-  }
-  .mote {
-    display: none;
-  }
-}
-
-/* The horizontal rooms track never widens the document, and under reduced
-   motion it is simply a vertical stack — complete, readable, still. §5.10 */
-.rooms {
-  overflow-x: clip;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .rooms-track {
-    flex-direction: column;
-    height: auto;
-    gap: 4rem;
-    padding-inline: clamp(1.25rem, 1rem + 2vw, 4.5rem);
-    transform: none !important;
-  }
-
-  .rooms-track > article {
-    width: 100%;
-    height: auto;
-    padding-inline: 0;
-  }
-
-  .room-photo {
-    transform: none !important;
-  }
-}
-
-/* Anything that can become a scroll target clears the fixed header. */
-:target,
-h1[id],
-h2[id],
-h3[id],
-section[id] {
-  scroll-margin-top: 6.5rem;
-}
-
-/* Chromium draws a date input's focus on its inner shadow parts, so the
-   element itself can end up with no visible ring. Make it explicit. §7 */
-input:focus-visible,
-select:focus-visible,
-textarea:focus-visible,
-input[type="date"]:focus-within,
-input[type="time"]:focus-within {
-  outline: 2px solid var(--color-brass);
-  outline-offset: 2px;
 }
 
 /* ───────────────────────────────────────────────────────────────
@@ -720,8 +437,9 @@ input[type="time"]:focus-within {
    CSS does the rest — no per-frame JavaScript anywhere below.
    ─────────────────────────────────────────────────────────────── */
 
-/* Aipan: pathLength="1" lets a plain transition draw any path. */
-.aipan-path {
+/* Aipan: pathLength="1" lets a plain transition draw any path. Scoped to the
+   threshold dividers — the logo and the door rosettes are always drawn. */
+.aipan .aipan-path {
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   transition: stroke-dashoffset 900ms var(--ease-in-out-soft);
@@ -748,30 +466,1512 @@ input[type="time"]:focus-within {
   transform: none;
 }
 
-/* Amenity marks stagger in behind their panel. */
-.room-amenity {
-  opacity: 0;
-  transform: translate3d(0, 10px, 0);
-  transition:
-    opacity 450ms linear,
-    transform 600ms var(--ease-out-expo);
-  transition-delay: calc(var(--i, 0) * 40ms);
-}
-
-.rooms.in-view .room-amenity {
-  opacity: 1;
-  transform: none;
-}
 
 @media (prefers-reduced-motion: reduce) {
-  .aipan-path {
+  .aipan .aipan-path {
     stroke-dashoffset: 0;
     transition: none;
   }
-  .arrive,
-  .room-amenity {
+  .arrive {
     opacity: 1;
     transform: none;
     transition: none;
   }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   THE HOUSE — round two
+   Rules for everything below:
+     · transform and opacity only, so motion stays on the compositor;
+     · scroll-linked motion is a CSS scroll-driven animation (no JS), with an
+       arrive-once `.in-view` transition where the browser lacks support;
+     · anything that loops lives in a `.loops` zone and pauses when the zone
+       is off screen (`.is-offscreen`, set by useInView({ toggle: true }));
+     · reduced motion gets the finished picture, never a half-drawn one.
+   ═══════════════════════════════════════════════════════════════════ */
+
+.loops.is-offscreen .loop,
+.loops.is-offscreen .loop * {
+  animation-play-state: paused !important;
+}
+
+[data-magnetic] {
+  transition:
+    translate 450ms var(--ease-out-expo),
+    background-color 300ms,
+    color 300ms,
+    border-color 300ms;
+}
+
+@keyframes fade-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* ── Status dot ──────────────────────────────────────────────────── */
+
+.status-dot {
+  position: relative;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 999px;
+  background: #8a8f8c;
+}
+
+.status-dot.is-open {
+  background: #4fb57a;
+}
+
+.status-dot.is-open::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #4fb57a;
+  animation: pulse 2s ease-out infinite;
+}
+
+@keyframes pulse {
+  from { transform: scale(1); opacity: 0.6; }
+  to { transform: scale(3); opacity: 0; }
+}
+
+/* ── Reception bell ──────────────────────────────────────────────── */
+
+.bell .bell-dome {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.bell .bell-ding {
+  transform-box: fill-box;
+  transform-origin: center;
+  opacity: 0;
+}
+
+.bell-btn:hover .bell-dome,
+.bell-btn:focus-visible .bell-dome {
+  animation: bell-ring 650ms ease-in-out;
+}
+
+.bell-btn:hover .bell-ding,
+.bell-btn:focus-visible .bell-ding {
+  animation: bell-ding 650ms ease-out;
+}
+
+@keyframes bell-ring {
+  0%, 100% { rotate: 0deg; }
+  20% { rotate: -14deg; }
+  40% { rotate: 11deg; }
+  60% { rotate: -7deg; }
+  80% { rotate: 3deg; }
+}
+
+@keyframes bell-ding {
+  0% { transform: scale(0.5); opacity: 0.7; }
+  100% { transform: scale(1.5); opacity: 0; }
+}
+
+/* ── Stay / Dine doors ───────────────────────────────────────────── */
+
+.door-frame {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 30rem;
+  border-radius: 2px;
+  border: 1px solid color-mix(in oklab, var(--color-brass) 30%, transparent);
+  background:
+    radial-gradient(120% 90% at 50% 0%, rgba(242, 193, 78, 0.12), transparent 60%),
+    var(--color-ink-soft);
+  perspective: 1800px;
+  view-timeline-name: --door;
+}
+
+.door-content {
+  position: relative;
+  z-index: 1;
+  padding: clamp(1.75rem, 1.2rem + 2vw, 3rem);
+  transition: translate 700ms var(--ease-out-expo);
+}
+
+.door-frame:hover .door-content {
+  translate: 0 -4px;
+}
+
+.door-arrow {
+  display: inline-block;
+  transition: translate 500ms var(--ease-out-expo);
+}
+
+.door-link:hover .door-arrow {
+  translate: 6px 0;
+}
+
+.door-leaf {
+  display: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 50.2%;
+  z-index: 3;
+  pointer-events: none;
+  backface-visibility: hidden;
+  background:
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.13) 0 2px, transparent 2px 11px),
+    linear-gradient(180deg, #5a3a24 0%, #3e2716 55%, #2e1d10 100%);
+  box-shadow:
+    inset 0 0 0 10px #2a190e,
+    inset 0 0 0 11px rgba(217, 164, 65, 0.5),
+    inset 0 0 40px rgba(0, 0, 0, 0.35);
+  transition: transform 1700ms var(--ease-in-out-soft);
+}
+
+.js-motion .door-leaf {
+  display: block;
+}
+
+.door-leaf.left {
+  left: 0;
+  transform-origin: 0 50%;
+}
+
+.door-leaf.right {
+  right: 0;
+  transform-origin: 100% 50%;
+}
+
+.door-panel-inset {
+  position: absolute;
+  left: 20%;
+  right: 20%;
+  border: 1px solid rgba(217, 164, 65, 0.35);
+  box-shadow: inset 0 0 0 5px #2a190e, inset 0 0 0 6px rgba(217, 164, 65, 0.2);
+}
+
+.door-panel-inset.top {
+  top: 9%;
+  height: 44%;
+}
+
+.door-panel-inset.bottom {
+  bottom: 8%;
+  height: 26%;
+}
+
+.door-rosette {
+  position: absolute;
+  left: 50%;
+  top: 31%;
+  width: 42%;
+  translate: -50% -50%;
+  color: rgba(242, 193, 78, 0.55);
+}
+
+.door-ring {
+  position: absolute;
+  top: 58%;
+  width: 18px;
+  height: 18px;
+  border-radius: 999px;
+  border: 2.5px solid #d9a441;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.5);
+}
+
+.door-leaf.left .door-ring { right: 10%; }
+.door-leaf.right .door-ring { left: 10%; }
+
+/* Fallback: doors open once, when the frame arrives. */
+.door-frame.in-view .door-leaf.left { transform: rotateY(96deg); }
+.door-frame.in-view .door-leaf.right { transform: rotateY(-96deg); }
+
+@supports (animation-timeline: view()) {
+  .door-leaf {
+    transition: none;
+    animation: linear both;
+    animation-timeline: --door;
+    animation-range: entry 35% cover 48%;
+  }
+  .door-leaf.left { animation-name: door-open-l; }
+  .door-leaf.right { animation-name: door-open-r; }
+
+  .door-content {
+    animation: door-content linear both;
+    animation-timeline: --door;
+    animation-range: entry 45% cover 50%;
+  }
+}
+
+@keyframes door-open-l { from { transform: rotateY(0); } to { transform: rotateY(96deg); } }
+@keyframes door-open-r { from { transform: rotateY(0); } to { transform: rotateY(-96deg); } }
+@keyframes door-content { from { opacity: 0.4; scale: 0.97; } to { opacity: 1; scale: 1; } }
+
+.dine-steam {
+  stroke-dasharray: 3 3;
+  animation: dine-steam 2.4s linear infinite;
+}
+
+@keyframes dine-steam {
+  to { stroke-dashoffset: -12; }
+}
+
+/* ── Rooms: stacked cards ────────────────────────────────────────── */
+
+.rooms-stack {
+  display: grid;
+  gap: 2rem;
+}
+
+.room-card {
+  position: relative;
+  padding-top: 1.25rem;
+}
+
+.key-tag {
+  position: absolute;
+  top: -0.75rem;
+  right: clamp(1rem, 4vw, 3rem);
+  z-index: 4;
+  transform-origin: 50% 12px;
+  filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.45));
+}
+
+.room-card.in-view .key-tag,
+.room-card:hover .key-tag {
+  animation: key-swing 1.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+}
+
+@keyframes key-swing {
+  0% { rotate: 0deg; }
+  14% { rotate: 16deg; }
+  32% { rotate: -11deg; }
+  52% { rotate: 6deg; }
+  72% { rotate: -3deg; }
+  100% { rotate: 0deg; }
+}
+
+/* The room photograph fills its half of the card; it eases in a touch on hover. */
+.room-img {
+  transition: scale 900ms var(--ease-out-expo);
+}
+
+.room-card:hover .room-img {
+  scale: 1.04;
+}
+
+@media (min-width: 1024px) and (min-height: 680px) {
+  .rooms-stack {
+    gap: 0;
+    padding-bottom: 12vh;
+  }
+  .room-card {
+    position: sticky;
+    top: calc(5.5rem + var(--i, 0) * 1.5rem);
+    height: min(38rem, calc(100svh - 8rem));
+    margin-bottom: 16vh;
+  }
+  .room-card:last-child {
+    margin-bottom: 0;
+  }
+  .room-card-inner {
+    box-shadow: 0 -30px 60px rgba(60, 45, 20, 0.10);
+  }
+
+  @supports (timeline-scope: --a) and (animation-timeline: view()) {
+    .room-card[data-recede] .room-card-inner {
+      transform-origin: 50% 0;
+      animation: card-recede linear both;
+      animation-timeline: var(--next);
+      animation-range: entry 0% entry 100%;
+    }
+    /* The covered card's key fob would otherwise poke up behind the nav. */
+    .room-card[data-recede] .key-tag {
+      animation: tag-away linear both;
+      animation-timeline: var(--next);
+      animation-range: entry 0% entry 50%;
+    }
+    .room-card[data-recede].in-view .key-tag,
+    .room-card[data-recede]:hover .key-tag {
+      animation: key-swing 1.8s cubic-bezier(0.36, 0.07, 0.19, 0.97) both, tag-away linear both;
+      animation-timeline: auto, var(--next);
+      animation-range: normal, entry 0% entry 50%;
+    }
+  }
+}
+
+@keyframes tag-away {
+  to { opacity: 0; }
+}
+
+@keyframes card-recede {
+  to { scale: 0.93; opacity: 0.55; }
+}
+
+/* ── Kitchen ─────────────────────────────────────────────────────── */
+
+.kitchen-warmth {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(70% 45% at 20% 55%, rgba(208, 112, 31, 0.16), transparent 70%),
+    radial-gradient(50% 40% at 90% 10%, rgba(242, 193, 78, 0.10), transparent 70%);
+}
+
+.kitchen-track {
+  view-timeline-name: --kitchen;
+}
+
+.thali {
+  position: relative;
+  aspect-ratio: 1;
+  width: 100%;
+  filter: drop-shadow(0 26px 50px rgba(60, 45, 20, 0.35));
+}
+
+.thali-ring {
+  position: absolute;
+  inset: 0;
+}
+
+.bowl {
+  position: absolute;
+  width: 27%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+}
+
+.bowl-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: translate3d(0, -46px, 0) scale(0.7);
+  transition:
+    opacity 500ms linear calc(var(--i) * 200ms + 150ms),
+    transform 900ms var(--ease-out-expo) calc(var(--i) * 200ms + 150ms),
+    scale 500ms var(--ease-out-expo);
+}
+
+.kitchen-track.in-view .bowl-inner {
+  opacity: 1;
+  transform: none;
+}
+
+.bowl.is-hot .bowl-inner {
+  scale: 1.12;
+}
+
+.bowl-steam {
+  position: absolute;
+  left: 42%;
+  top: 18%;
+  width: 16%;
+  height: 34%;
+  border-radius: 999px;
+  background: radial-gradient(closest-side, rgba(245, 236, 220, 0.5), transparent);
+  opacity: 0;
+  animation: bowl-steam 3.2s ease-out infinite;
+}
+
+@keyframes bowl-steam {
+  0% { transform: translate3d(0, 0, 0) scale(0.6); opacity: 0; }
+  25% { opacity: 0.55; }
+  100% { transform: translate3d(8px, -70%, 0) scale(1.5); opacity: 0; }
+}
+
+.dish {
+  padding: 1.25rem 1.25rem 1.25rem 1.5rem;
+  border-left: 2px solid color-mix(in oklab, var(--color-brass) 22%, transparent);
+  opacity: 0.4;
+  transition:
+    opacity 600ms linear calc(var(--i) * 200ms + 150ms),
+    border-color 400ms,
+    background-color 400ms;
+}
+
+.kitchen-track.in-view .dish {
+  opacity: 1;
+}
+
+.dish.is-hot {
+  border-left-color: var(--color-haldu);
+  background: color-mix(in oklab, var(--color-brass) 7%, transparent);
+}
+
+@supports (animation-timeline: view()) and (timeline-scope: --a) {
+  .thali-ring {
+    animation: plate-turn linear both;
+    animation-timeline: --kitchen;
+    animation-range: cover 0% cover 100%;
+  }
+  /* Each bowl lands as its own dish reaches the middle of the screen. */
+  .bowl-inner {
+    transition-property: scale;
+    animation: bowl-land linear both;
+    animation-timeline: var(--tl);
+    animation-range: entry 40% cover 45%;
+  }
+  .dish {
+    transition-property: border-color, background-color;
+    animation: dish-lit linear both;
+    animation-timeline: view();
+    animation-range: entry 40% cover 45%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .dish {
+    min-height: 34svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+@keyframes plate-turn { from { rotate: -40deg; } to { rotate: 80deg; } }
+@keyframes bowl-land {
+  from { opacity: 0; transform: translate3d(0, -46px, 0) scale(0.7); }
+  60% { opacity: 1; }
+  to { opacity: 1; transform: none; }
+}
+@keyframes dish-lit { from { opacity: 0.4; } to { opacity: 1; } }
+
+.rank-badge {
+  position: relative;
+  width: 8.5rem;
+  aspect-ratio: 1;
+  color: var(--color-brass);
+  flex-shrink: 0;
+}
+
+.rank-badge-ring {
+  width: 100%;
+  height: 100%;
+  animation: spin 26s linear infinite;
+}
+
+@keyframes spin {
+  to { rotate: 360deg; }
+}
+
+.menu-card {
+  position: relative;
+  padding: 2rem 1.75rem 1.75rem;
+  background:
+    radial-gradient(120% 80% at 50% 0%, #faf3e6, transparent 70%),
+    #efe4d1;
+  color: var(--color-cocoa);
+  rotate: -1.2deg;
+  box-shadow:
+    0 30px 60px rgba(60, 45, 20, 0.18),
+    inset 0 0 0 1px rgba(43, 42, 40, 0.12),
+    inset 0 0 0 7px #efe4d1,
+    inset 0 0 0 8px rgba(43, 42, 40, 0.22);
+  transition: rotate 800ms var(--ease-out-expo);
+}
+
+.menu-card:hover {
+  rotate: 0deg;
+}
+
+.leader {
+  flex: 1;
+  height: 0;
+  border-bottom: 2px dotted rgba(43, 42, 40, 0.35);
+  translate: 0 3px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 900ms var(--ease-out-expo) calc(var(--i, 0) * 70ms + 200ms);
+}
+
+.menu-card.in-view .leader {
+  transform: none;
+}
+
+/* ── Amenity band (under the hero) ─────────────────────────────── */
+
+.amenity-band {
+  border-block: 1px solid color-mix(in oklab, var(--color-haldu) 60%, transparent);
+  background:
+    linear-gradient(90deg, #c9892c 0%, var(--color-brass) 22%, var(--color-haldu) 50%, var(--color-brass) 78%, #c9892c 100%);
+  box-shadow: 0 0 28px rgba(242, 193, 78, 0.28);
+}
+
+/* ── Book direct ─────────────────────────────────────────────────── */
+
+.stars {
+  position: relative;
+  display: inline-block;
+  font-size: 1.05rem;
+  letter-spacing: 0.12em;
+  line-height: 1;
+}
+
+.stars-base {
+  color: color-mix(in oklab, var(--color-mist) 25%, transparent);
+}
+
+.stars-fill {
+  position: absolute;
+  inset: 0;
+  color: var(--color-haldu);
+  clip-path: inset(0 calc(100% - var(--fill)) 0 0);
+}
+
+.wa-window {
+  background: #18181a;
+}
+
+.wa-body {
+  min-height: 16rem;
+  background:
+    radial-gradient(circle at 20% 20%, rgba(217, 164, 65, 0.06) 0 1px, transparent 1.5px) 0 0 / 22px 22px,
+    #141415;
+}
+
+.wa-bubble {
+  position: relative;
+  max-width: 34rem;
+  margin-left: auto;
+  padding: 0.9rem 1rem;
+  border-radius: 12px 12px 4px 12px;
+  background: #1d3a2d;
+  color: #e9f2ec;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  white-space: pre-wrap;
+  word-break: break-word;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+  transform-origin: 100% 100%;
+}
+
+.wa-bubble.bump {
+  animation: bubble-bump 320ms var(--ease-out-expo);
+}
+
+@keyframes bubble-bump {
+  from { scale: 0.985; }
+  to { scale: 1; }
+}
+
+/* ── Reduced motion: the finished picture ────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .bowl-inner,
+  .dish,
+  .leader {
+    opacity: 1 !important;
+    transform: none !important;
+    animation: none !important;
+    transition: none !important;
+  }
+  .bowl-steam,
+  .rank-badge-ring,
+  .status-dot::after,
+  .dine-steam,
+  .key-tag {
+    animation: none !important;
+  }
+  .bowl-steam {
+    display: none;
+  }
+  .door-leaf {
+    display: none !important;
+  }
+  .room-card-inner,
+  .door-content,
+  .thali-ring {
+    animation: none !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .hero-title {
+    font-size: min(clamp(2.5rem, 1.5rem + 4.6vw, 5.5rem), 10svh);
+  }
+}
+
+@media (min-width: 1024px) and (max-height: 820px) {
+  .hero .lede {
+    font-size: 1.0625rem;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   ROUND THREE — the gateway map, a quieter page change, small delights.
+   Same rules as above: compositor properties, loops pause off screen,
+   reduced motion gets the finished picture.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Page change: fade out, brass hairline, rise in ─────────────────── */
+
+.route-line {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 90;
+  height: 2px;
+  pointer-events: none;
+  background: linear-gradient(90deg, rgba(217, 164, 65, 0), var(--color-brass) 30%, var(--color-haldu));
+  box-shadow: 0 0 12px rgba(242, 193, 78, 0.55);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  opacity: 0;
+}
+
+html[data-route="leave"] .route-line {
+  opacity: 1;
+  transform: scaleX(0.7);
+  transition: transform 1400ms cubic-bezier(0.1, 0.7, 0.2, 1), opacity 120ms linear;
+}
+
+html[data-route="enter"] .route-line {
+  opacity: 0;
+  transform: scaleX(1);
+  transition: transform 280ms var(--ease-out-expo), opacity 380ms linear 220ms;
+}
+
+html[data-route="leave"] #main,
+html[data-route="leave"] footer {
+  opacity: 0;
+  transform: translate3d(0, -8px, 0);
+  transition: opacity 220ms ease-in, transform 240ms ease-in;
+}
+
+html[data-route="enter"] #main {
+  animation: page-in 620ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+html[data-route="enter"] footer {
+  animation: fade-in 620ms linear both;
+  opacity: 0;
+}
+
+@keyframes page-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 16px, 0);
+  }
+}
+
+/* ── The gateway map ────────────────────────────────────────────────── */
+
+.map-live {
+  will-change: transform;
+}
+
+.map-contours {
+  opacity: 0;
+  transition: opacity 1400ms linear;
+}
+
+.gateway.in-view .map-contours {
+  opacity: 1;
+}
+
+.map-draw,
+.map-route {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition:
+    stroke-dashoffset 1600ms var(--ease-in-out-soft) var(--d, 0s),
+    opacity 400ms,
+    stroke-width 400ms;
+}
+
+.gateway.in-view .map-draw,
+.gateway.in-view .map-route {
+  stroke-dashoffset: 0;
+}
+
+.map-route[data-id="airport"] {
+  stroke-dasharray: 0.012 0.012;
+  stroke-dashoffset: 0;
+  opacity: 0;
+  transition: opacity 900ms linear var(--d, 0s);
+}
+
+.gateway.in-view .map-route[data-id="airport"] {
+  opacity: 1;
+}
+
+/* Hover a town and its road lights up; the rest step back. */
+.gateway-map:has(.map-pin[data-id]:hover) .map-route {
+  opacity: 0.25;
+}
+.gateway-map:has(.map-pin[data-id="bhimtal"]:hover) .map-route[data-id="bhimtal"],
+.gateway-map:has(.map-pin[data-id="nainital"]:hover) .map-route[data-id="nainital"],
+.gateway-map:has(.map-pin[data-id="kainchi"]:hover) .map-route[data-id="kainchi"],
+.gateway-map:has(.map-pin[data-id="corbett"]:hover) .map-route[data-id="corbett"],
+.gateway-map:has(.map-pin[data-id="mukteshwar"]:hover) .map-route[data-id="mukteshwar"],
+.gateway-map:has(.map-pin[data-id="almora"]:hover) .map-route[data-id="almora"] {
+  opacity: 1;
+  stroke: #e8b95a;
+  stroke-width: 3;
+}
+
+.map-lamps {
+  opacity: 0;
+  transition: opacity 600ms linear 2s;
+}
+
+.gateway.in-view .map-lamps {
+  opacity: 1;
+}
+
+.map-pin {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+
+.pin-dot {
+  position: absolute;
+  left: -5px;
+  top: -5px;
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--color-haldu);
+  box-shadow:
+    0 0 0 3px rgba(242, 193, 78, 0.18),
+    0 0 16px 2px rgba(240, 192, 96, 0.5);
+  scale: 0;
+  transition: scale 600ms cubic-bezier(0.34, 1.56, 0.64, 1) var(--at, 0.2s);
+}
+
+.pin-label {
+  position: absolute;
+  top: -0.8rem;
+  white-space: nowrap;
+  line-height: 1.15;
+  opacity: 0;
+  translate: 0 6px;
+  transition:
+    opacity 600ms linear var(--at, 0.2s),
+    translate 800ms var(--ease-out-expo) var(--at, 0.2s);
+}
+
+.map-pin[data-side="r"] .pin-label { left: 14px; }
+.map-pin[data-side="l"] .pin-label { right: 14px; text-align: right; }
+.map-pin[data-side="b"] .pin-label { top: 12px; left: 0; translate: -50% 6px; text-align: center; }
+.map-pin[data-side="t"] .pin-label { top: auto; bottom: 12px; left: 0; translate: -50% 6px; text-align: center; }
+
+.gateway.in-view .pin-dot { scale: 1; }
+.gateway.in-view .pin-label { opacity: 1; translate: 0 0; }
+.gateway.in-view .map-pin[data-side="b"] .pin-label,
+.gateway.in-view .map-pin[data-side="t"] .pin-label { translate: -50% 0; }
+
+.pin-name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: clamp(0.8125rem, 0.62rem + 0.85vw, 1.25rem);
+  color: var(--color-rice);
+  transition: color 300ms;
+}
+
+.map-pin:hover .pin-name {
+  color: var(--color-haldu);
+}
+
+.pin-meta {
+  display: block;
+  margin-top: 2px;
+  font-size: clamp(0.625rem, 0.56rem + 0.3vw, 0.75rem);
+  color: color-mix(in oklab, var(--color-mist) 75%, transparent);
+}
+
+.pin-meta .tnum {
+  color: var(--color-haldu);
+}
+
+.pin-note {
+  position: absolute;
+  top: 100%;
+  width: 21ch;
+  margin-top: 6px;
+  white-space: normal;
+  font-size: 0.6875rem;
+  line-height: 1.4;
+  color: color-mix(in oklab, var(--color-mist) 80%, transparent);
+  opacity: 0;
+  translate: 0 -4px;
+  transition: opacity 300ms, translate 400ms var(--ease-out-expo);
+  pointer-events: none;
+}
+
+.map-pin[data-side="r"] .pin-note { left: 0; }
+.map-pin[data-side="l"] .pin-note { right: 0; }
+.map-pin[data-side="b"] .pin-note { left: 50%; translate: -50% -4px; }
+.map-pin[data-side="t"] .pin-note { top: auto; bottom: 100%; margin: 0 0 6px; left: 50%; translate: -50% 4px; }
+
+.map-pin:hover .pin-note { opacity: 1; translate: 0 0; }
+.map-pin[data-side="b"]:hover .pin-note,
+.map-pin[data-side="t"]:hover .pin-note { translate: -50% 0; }
+
+@media (max-width: 639px) {
+  .pin-note { display: none; }
+}
+
+.map-pin--minor .pin-dot {
+  left: -3.5px;
+  top: -3.5px;
+  width: 7px;
+  height: 7px;
+  background: var(--color-mist);
+  box-shadow: 0 0 0 3px rgba(216, 207, 192, 0.12);
+}
+
+.map-pin--minor .pin-name {
+  font-family: var(--font-sans);
+  font-size: clamp(0.625rem, 0.55rem + 0.35vw, 0.8125rem);
+  color: color-mix(in oklab, var(--color-mist) 90%, transparent);
+}
+
+.map-pin--home .pin-dot {
+  left: -7px;
+  top: -7px;
+  width: 14px;
+  height: 14px;
+  background: var(--color-brass);
+  border: 2px solid var(--color-rice);
+}
+
+.map-pin--home .pin-name {
+  color: var(--color-haldu);
+}
+
+.map-pin--home .pin-label {
+  top: 0.35rem;
+}
+
+.home-ring {
+  position: absolute;
+  left: -20px;
+  top: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1.5px solid rgba(242, 193, 78, 0.7);
+  opacity: 0;
+  animation: home-ping 2.6s cubic-bezier(0.2, 0.6, 0.3, 1) infinite;
+}
+
+@keyframes home-ping {
+  0% { transform: scale(0.3); opacity: 0.9; }
+  100% { transform: scale(1.7); opacity: 0; }
+}
+
+/* ── The arrivals board ─────────────────────────────────────────────── */
+
+.board {
+  border: 1px solid rgba(217, 164, 65, 0.3);
+  border-radius: 3px;
+  background: linear-gradient(180deg, #121213, #19191a);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.03),
+    0 30px 60px rgba(60, 45, 20, 0.12);
+}
+
+.board-row {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  padding: 0.9rem 1.25rem;
+  border-top: 1px solid rgba(217, 164, 65, 0.12);
+}
+
+.board-row:first-child {
+  border-top: 0;
+}
+
+.flap {
+  position: relative;
+  display: inline-grid;
+  place-items: center;
+  width: 1.4rem;
+  height: 2rem;
+  border-radius: 2px;
+  background: linear-gradient(180deg, #262625 0 50%, #1c1c1b 50% 100%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.04);
+  color: #f2c14e;
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  line-height: 1;
+  opacity: 0;
+  transform: perspective(220px) rotateX(-90deg);
+}
+
+.flap:not([data-digit]) {
+  width: 0.7rem;
+}
+
+.flap::after {
+  content: "";
+  position: absolute;
+  inset: 50% 0 auto 0;
+  height: 1px;
+  background: rgba(0, 0, 0, 0.7);
+}
+
+.gateway.in-view .flap {
+  animation: flap-in 620ms cubic-bezier(0.3, 0.7, 0.3, 1) calc(300ms + var(--r) * 150ms + var(--c) * 60ms) both;
+}
+
+@keyframes flap-in {
+  0% { opacity: 1; transform: perspective(220px) rotateX(-90deg); }
+  70% { opacity: 1; transform: perspective(220px) rotateX(14deg); }
+  100% { opacity: 1; transform: none; }
+}
+
+/* ── Buttons: a slow brass sheen ────────────────────────────────────── */
+
+.sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(105deg, transparent 30%, rgba(255, 244, 214, 0.55) 50%, transparent 70%);
+  transform: translateX(-130%);
+  pointer-events: none;
+}
+
+.sheen:hover::after,
+.sheen:focus-visible::after {
+  transform: translateX(130%);
+  transition: transform 900ms var(--ease-out-expo);
+}
+
+.sheen.loop::after {
+  animation: sheen-pass 7s ease-in-out 2.5s infinite;
+}
+
+@keyframes sheen-pass {
+  0% { transform: translateX(-130%); }
+  14%, 100% { transform: translateX(130%); }
+}
+
+.loops.is-offscreen .loop::after {
+  animation-play-state: paused !important;
+}
+
+/* ── WhatsApp preview: the desk is typing ───────────────────────────── */
+
+.wa-body {
+  position: relative;
+}
+
+.wa-typing {
+  position: absolute;
+  right: 1.5rem;
+  top: 1.5rem;
+  display: flex;
+  gap: 4px;
+  padding: 0.75rem 0.9rem;
+  border-radius: 12px 12px 4px 12px;
+  background: #1d3a2d;
+  opacity: 0;
+}
+
+.wa-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: #9fc3b0;
+  animation: typing-dot 900ms ease-in-out infinite;
+}
+
+.wa-typing span:nth-child(2) { animation-delay: 150ms; }
+.wa-typing span:nth-child(3) { animation-delay: 300ms; }
+
+@keyframes typing-dot {
+  0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+  30% { transform: translateY(-4px); opacity: 1; }
+}
+
+.wa-arrive {
+  opacity: 0;
+  transform: translate3d(0, 10px, 0) scale(0.96);
+  transform-origin: 100% 0;
+}
+
+.wa-window.in-view .wa-typing {
+  animation: typing-show 1300ms linear both;
+}
+
+.wa-window.in-view .wa-arrive {
+  animation: bubble-in 620ms cubic-bezier(0.34, 1.4, 0.64, 1) 1200ms both;
+}
+
+@keyframes typing-show {
+  0% { opacity: 0; }
+  12%, 88% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes bubble-in {
+  from { opacity: 0; transform: translate3d(0, 10px, 0) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+/* ── Reduced motion: the finished picture ───────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  html[data-route] #main,
+  html[data-route] footer,
+  .route-line {
+    animation: none !important;
+    transition: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+  .route-line {
+    opacity: 0 !important;
+  }
+  .map-draw,
+  .map-route,
+  .map-contours,
+  .pin-dot,
+  .pin-label,
+  .flap,
+  .wa-arrive,
+  .room-img {
+    transition: none !important;
+    animation: none !important;
+    stroke-dashoffset: 0 !important;
+    opacity: 1 !important;
+    scale: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  .pin-label {
+    translate: 0 0 !important;
+  }
+  .map-pin[data-side="b"] .pin-label,
+  .map-pin[data-side="t"] .pin-label {
+    translate: -50% 0 !important;
+  }
+  .map-lamps,
+  .home-ring,
+  .wa-typing {
+    display: none !important;
+  }
+  .sheen::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   HERO — the building, and a scroll that walks you up to it.
+   Phone: the photo, then the copy below it; effects play as the photo
+   scrolls past. Desktop: the photo holds full-screen (sticky) for one
+   extra screen of scroll while the camera pushes in; the copy card sits
+   over the left and steps aside. Transforms and opacity only.
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Start the photograph below the fixed nav, never under it. */
+.hs-track {
+  padding-top: var(--nav-h);
+}
+
+.hs-frame {
+  position: relative;
+  height: 68svh;
+  min-height: 360px;
+  overflow: hidden;
+  background: #1b2440;
+  container-type: size;
+}
+
+/* The zoom layer is the photograph's own shape (1672 × 941), sized to cover
+   the frame — so the pins and the lit box, placed in photo percentages, land
+   on the building at every screen shape. */
+.hs-zoom {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: max(100cqw, 177.68cqh);
+  height: max(100cqh, 56.28cqw);
+  transform: translate(-50%, -50%) scale(1.02);
+  will-change: transform;
+}
+
+.hs-photo {
+  object-fit: cover;
+  object-position: 50% 50%;
+}
+
+/* The lit version of the photo (street already dimmed), faded in by scroll. */
+.hs-lit {
+  opacity: 0;
+  will-change: opacity;
+}
+
+/* A warm light that follows the pointer (desktop). */
+.hs-light {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 46vmax;
+  height: 46vmax;
+  margin: -23vmax 0 0 -23vmax;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(255, 214, 120, 0.22), rgba(255, 214, 120, 0.06) 55%, transparent);
+  opacity: 0;
+  transition: opacity 600ms;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hs-sticky[data-lit="true"] .hs-light {
+  opacity: 1;
+}
+
+/* Pins */
+.hs-pins {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hs-pin {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  translate: -0.55rem -50%;
+  opacity: 1;
+}
+
+.hs-pin-dot {
+  position: relative;
+  width: 1.1rem;
+  height: 1.1rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--color-gold);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.85), 0 0 18px 4px rgba(242, 193, 78, 0.8);
+}
+
+.hs-pin-dot::after {
+  content: "";
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 2px solid rgba(242, 193, 78, 0.9);
+  animation: pin-pulse 2.2s ease-out infinite;
+}
+
+@keyframes pin-pulse {
+  from { transform: scale(0.5); opacity: 1; }
+  to { transform: scale(1.8); opacity: 0; }
+}
+
+.hs-pin-label {
+  display: flex;
+  flex-direction: column;
+  padding: 0.4rem 0.7rem;
+  border-radius: 3px;
+  background: rgba(251, 247, 239, 0.95);
+  border: 1px solid rgba(226, 169, 59, 0.7);
+  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+  font-size: 0.6875rem;
+  line-height: 1.3;
+  color: var(--color-mist);
+}
+
+.hs-pin-label strong {
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: 0.9375rem;
+  color: var(--color-charcoal);
+}
+
+/* The rooms pin opens to the right, reception to the right, parking to the left. */
+.hs-pin:nth-child(3) {
+  flex-direction: row-reverse;
+  translate: calc(-100% + 0.55rem) -50%;
+}
+
+@media (max-width: 639px) {
+  .hs-pin-label {
+    padding: 0.3rem 0.5rem;
+  }
+  .hs-pin-label strong {
+    font-size: 0.8125rem;
+  }
+  .hs-pin-label > span {
+    display: none;
+  }
+  .hs-pin-dot {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+}
+
+.hs-cue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  translate: -50% 0;
+  font-size: 0.625rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 248, 232, 0.9);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  pointer-events: none;
+}
+
+.hs-cue-line {
+  display: block;
+  width: 1px;
+  height: 2.25rem;
+  background: linear-gradient(rgba(255, 214, 120, 1), transparent);
+  transform-origin: top;
+  animation: cue 2.2s var(--ease-in-out-soft) infinite;
+}
+
+@keyframes cue {
+  0% { transform: scaleY(0); opacity: 1; }
+  60% { transform: scaleY(1); opacity: 1; }
+  100% { transform: scaleY(1); opacity: 0; }
+}
+
+.hs-copy {
+  position: relative;
+  z-index: 2;
+}
+
+.hs-card {
+  padding: 2rem clamp(1.25rem, 1rem + 2vw, 4.5rem) 3.5rem;
+}
+
+/* The direct-booking promise, where nobody can miss it. */
+.direct-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  max-width: 34rem;
+  padding: 0.65rem 0.9rem 0.65rem 0.65rem;
+  border-radius: 4px;
+  border: 1px solid rgba(226, 169, 59, 0.75);
+  background: linear-gradient(90deg, rgba(242, 193, 78, 0.28), rgba(242, 193, 78, 0.08));
+  color: var(--color-charcoal);
+  font-size: 0.875rem;
+  line-height: 1.4;
+  transition: background-color 300ms, translate 400ms var(--ease-out-expo);
+}
+
+.direct-pill:hover {
+  translate: 0 -2px;
+}
+
+.direct-pill-tag {
+  flex: none;
+  padding: 0.3rem 0.55rem;
+  border-radius: 3px;
+  background: var(--color-charcoal);
+  color: #f6d27c;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+/* ── Desktop: full-screen, sticky, copy card over the left ─────────── */
+@media (min-width: 1024px) {
+  .hs-sticky {
+    position: sticky;
+    top: var(--nav-h);
+    height: calc(100svh - var(--nav-h));
+    overflow: hidden;
+  }
+  .hs-frame {
+    position: absolute;
+    inset: 0;
+    height: auto;
+  }
+  .hs-zoom {
+    transform: translate(-50%, -50%) translate(3%, 2.8%) scale(1.06);
+  }
+  .hs-copy {
+    position: absolute;
+    inset: 0 auto 0 0;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem 0 1.5rem clamp(1.25rem, 1rem + 2vw, 4.5rem);
+    pointer-events: none;
+  }
+  .hs-card {
+    width: min(38rem, 44vw);
+    padding: 2.25rem 2.5rem 2.25rem;
+    border-radius: 4px;
+    border: 1px solid rgba(226, 169, 59, 0.55);
+    background: rgba(251, 247, 239, 0.95);
+    box-shadow: 0 30px 70px -20px rgba(0, 0, 0, 0.55);
+    pointer-events: auto;
+  }
+  .hero-title {
+    font-size: min(clamp(2.5rem, 1.6rem + 2.6vw, 4.25rem), 8.5svh);
+  }
+  .hs-cue {
+    left: auto;
+    right: 3rem;
+    translate: none;
+  }
+}
+
+/* ── The scroll: only where the browser supports scroll timelines ────
+   Transform and opacity only, and no custom properties inside keyframes,
+   so every one of these runs on the compositor, off the main thread. */
+@supports (animation-timeline: view()) {
+  .hs-frame {
+    view-timeline-name: --stage;
+  }
+  .hs-zoom,
+  .hs-lit,
+  .hs-pin,
+  .hs-cue,
+  .hs-card {
+    animation-timing-function: linear;
+    animation-fill-mode: both;
+    animation-timeline: --stage;
+    animation-range: exit 0% exit 50%;
+  }
+  .hs-zoom { animation-name: hs-zoom-m; }
+  .hs-lit { animation-name: hs-lit; }
+  .hs-pin { animation-name: hs-pin; }
+  .hs-cue { animation-name: hs-cue; }
+
+  @media (min-width: 1024px) {
+    .hs-track {
+      height: 210svh;
+      view-timeline-name: --stage;
+    }
+    .hs-frame {
+      view-timeline-name: none;
+    }
+    .hs-zoom,
+    .hs-lit,
+    .hs-pin,
+    .hs-cue,
+    .hs-card {
+      animation-range: contain 0% contain 100%;
+    }
+    .hs-zoom { animation-name: hs-zoom-d; }
+    .hs-card { animation-name: hs-card; }
+  }
+}
+
+@keyframes hs-zoom-m {
+  from { transform: translate(-50%, -50%) scale(1.02); }
+  to { transform: translate(-50%, -50%) translate(0, 1%) scale(1.14); }
+}
+@keyframes hs-zoom-d {
+  from { transform: translate(-50%, -50%) translate(3%, 2.8%) scale(1.06); }
+  to { transform: translate(-50%, -50%) translate(0, -6%) scale(1.45); }
+}
+@keyframes hs-lit {
+  0%, 12% { opacity: 0; }
+  60%, 100% { opacity: 1; }
+}
+@keyframes hs-pin {
+  0%, 45% { opacity: 0; transform: translateY(12px) scale(0.9); }
+  70%, 100% { opacity: 1; transform: none; }
+}
+@keyframes hs-cue {
+  0% { opacity: 1; }
+  15%, 100% { opacity: 0; }
+}
+@keyframes hs-card {
+  0%, 12% { opacity: 1; transform: none; }
+  45%, 100% { opacity: 0; transform: translate3d(-40px, 0, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hs-zoom,
+  .hs-lit,
+  .hs-pin,
+  .hs-cue,
+  .hs-card,
+  .hs-cue-line,
+  .hs-pin-dot::after {
+    animation: none !important;
+  }
+  .hs-track {
+    height: auto !important;
+  }
+}
+
+/* ── Direct rates ──────────────────────────────────────────────────── */
+
+.direct-card.is-best {
+  border: 1.5px solid var(--color-gold);
+  background:
+    radial-gradient(120% 90% at 100% 0%, rgba(242, 193, 78, 0.28), transparent 60%),
+    #fffaf0;
+  box-shadow: 0 24px 60px -24px rgba(125, 84, 11, 0.45);
+}
+
+.direct-strike {
+  position: relative;
+  display: inline-block;
+}
+
+.direct-strike::after {
+  content: "";
+  position: absolute;
+  left: -4%;
+  right: -4%;
+  top: 55%;
+  height: 2px;
+  background: var(--color-geru);
+}
+
+.direct-stamp {
+  position: absolute;
+  top: -0.9rem;
+  right: 1.25rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 3px;
+  background: var(--color-charcoal);
+  color: #f6d27c;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  rotate: 3deg;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.25);
+}
+
+/* ── A note from the founder ───────────────────────────────────────── */
+
+.founder-year {
+  font-size: clamp(5rem, 3rem + 9vw, 10rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+}
+
+.founder-step {
+  display: grid;
+  grid-template-columns: 5.5rem 1fr;
+  align-items: baseline;
+  gap: 1rem;
+  padding-block: 0.9rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-brass) 22%, transparent);
 }

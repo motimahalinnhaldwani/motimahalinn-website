@@ -1,63 +1,45 @@
 import type { Metadata } from "next";
 
-import Threshold from "@/components/sections/Threshold";
+import Hero from "@/components/sections/Hero";
+import AmenitiesTicker from "@/components/sections/AmenitiesTicker";
+import DirectRates from "@/components/sections/DirectRates";
 import Gateway from "@/components/sections/Gateway";
+import StayDine from "@/components/sections/StayDine";
 import Rooms from "@/components/sections/Rooms";
-import Table from "@/components/sections/Table";
-import ChocolateRoom from "@/components/sections/ChocolateRoom";
-import Journeys from "@/components/sections/Journeys";
-import Voices from "@/components/sections/Voices";
-import Invitation from "@/components/sections/Invitation";
-
+import FounderNote from "@/components/sections/FounderNote";
+import BookDirect from "@/components/sections/BookDirect";
+import FindUs from "@/components/sections/FindUs";
 import AipanThreshold from "@/components/motion/AipanThreshold";
-import PriceCompare from "@/components/ui/PriceCompare";
 import JsonLd from "@/components/ui/JsonLd";
 
 import { faqSchema, distanceFaqs } from "@/lib/seo";
 import { site } from "@/content/site";
 
 export const metadata: Metadata = {
-  title: `${site.name} — Haldwani, at the gateway to Kumaon`,
+  title: `${site.name} — Three-Star Hotel in Haldwani, Nainital Road`,
   description: site.description,
   alternates: { canonical: "/" },
 };
 
 /**
- * The journey. One long scroll with a direction: hot hazy amber plains at the
- * top, cool misty deodar green at the bottom. By the footer you should feel
- * like you have gained altitude.
+ * The hotel first: the inn lit up at dusk, what every guest gets, where it sits
+ * on the road into the hills, the rooms, the family behind it since 1972, and
+ * how to book a room without a middleman.
  */
 export default function Home() {
   return (
     <>
-      <Threshold />
-
-      <AipanThreshold variant="kamal" label="Kumaon ka Dwar" />
+      <Hero />
+      <AmenitiesTicker />
+      <DirectRates />
       <Gateway />
-
-      <AipanThreshold variant="chowki" label="The rooms" />
+      <StayDine />
       <Rooms />
-
-      <AipanThreshold variant="jyoti" label="The table" />
-      <Table />
-
-      {/*
-        No threshold before the café. §5 asks for a hard cut to light, and a
-        door drawn first would soften exactly the beat that section is for.
-        The aipan returns below, on the way back into the dark.
-      */}
-      <ChocolateRoom />
-
-      <AipanThreshold variant="kamal" label="From the door" />
-      <Journeys />
-
-      <AipanThreshold variant="chowki" label="Voices" />
-      <Voices />
-
-      <PriceCompare />
-      <Invitation />
-
-      <JsonLd data={faqSchema(distanceFaqs)} />
+      <AipanThreshold variant="jyoti" label="Since 1972" />
+      <FounderNote />
+      <BookDirect />
+      <FindUs />
+      <JsonLd data={[faqSchema(distanceFaqs)]} />
     </>
   );
 }

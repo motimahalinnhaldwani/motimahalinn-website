@@ -54,6 +54,24 @@ export default function MagneticCursor() {
       el.style.opacity = "0";
     };
 
+    /* Magnetic buttons: the element under the pointer leans toward it, a few
+       pixels at most. The separate \`translate\` property, so it never fights a
+       transform an animation owns. */
+    let magnet: HTMLElement | null = null;
+    const onMagnet = (e: PointerEvent) => {
+      const t = (e.target as Element | null)?.closest?.<HTMLElement>("[data-magnetic]") ?? null;
+      if (magnet && magnet !== t) {
+        magnet.style.translate = "";
+        magnet = null;
+      }
+      if (!t) return;
+      magnet = t;
+      const r = t.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width / 2)) / (r.width / 2);
+      const dy = (e.clientY - (r.top + r.height / 2)) / (r.height / 2);
+      t.style.translate = `${(dx * 6).toFixed(1)}px ${(dy * 4).toFixed(1)}px`;
+    };
+
     /* Only run while there is something to catch up to. A rAF loop that never
        stops keeps the compositor awake for the life of the page. */
     const tick = () => {
@@ -75,12 +93,15 @@ export default function MagneticCursor() {
     };
 
     window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointermove", onMagnet, { passive: true });
     document.addEventListener("pointerleave", onLeave);
     window.addEventListener("blur", onLeave);
 
     return () => {
       cancelAnimationFrame(raf);
       window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointermove", onMagnet);
+      if (magnet) magnet.style.translate = "";
       document.removeEventListener("pointerleave", onLeave);
       window.removeEventListener("blur", onLeave);
       document.body.classList.remove("has-cursor", "cursor-native");

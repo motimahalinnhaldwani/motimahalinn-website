@@ -30,7 +30,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
   const setTier = useUI((s) => s.setTier);
   const setReducedMotion = useUI((s) => s.setReducedMotion);
   const setReady = useUI((s) => s.setReady);
-  const setPastHero = useUI((s) => s.setPastHero);
 
   useEffect(() => {
     const root = document.documentElement;
@@ -45,7 +44,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
     root.dataset.daypart = daypart(new Date().getHours());
 
     let queued = false;
-    let lastPast = false;
     let river: SVGPathElement | null = null;
 
     const write = () => {
@@ -64,11 +62,6 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       river ??= document.querySelector<SVGPathElement>("[data-river]");
       if (river) river.style.strokeDashoffset = String((1 - p) * 1100);
 
-      const past = y > window.innerHeight * 0.7;
-      if (past !== lastPast) {
-        lastPast = past;
-        setPastHero(past);
-      }
 
     };
 
@@ -86,7 +79,7 @@ export default function SmoothScroll({ children }: { children: React.ReactNode }
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("resize", onScroll);
     };
-  }, [setTier, setReducedMotion, setReady, setPastHero]);
+  }, [setTier, setReducedMotion, setReady]);
 
   useEffect(() => {
     window.scrollTo(0, 0);

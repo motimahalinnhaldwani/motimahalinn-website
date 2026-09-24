@@ -6,15 +6,46 @@
 
 ---
 
-## Running it
+## What is in this folder
+
+| Folder / file | What it is |
+|---|---|
+| `site/` | **The finished website as plain files** (`index.html`, CSS, JS, photos). Upload or copy this folder to any web host. Not uploaded to GitHub. |
+| `app/` | One folder per page (`app/page.tsx` is the home page, `app/rooms/` the rooms…). |
+| `components/` | The building blocks the pages are made of (hero, nav, footer, room cards…). |
+| `content/` | The words and facts: phone number, rooms, photos list, menu. Most edits happen here. |
+| `lib/` | Small helpers (WhatsApp message, kitchen hours, SEO data). |
+| `public/` | Fonts and photos, served as-is. |
+| `package.json`, `package-lock.json`, `next.config.ts`, `tsconfig.json`, `postcss.config.mjs` | Settings Vercel needs to build the site. Leave them in place. |
+
+There is no `index.html` at the top level on purpose: the pages are written in
+`app/` and turned into HTML by the build. `site/index.html` is the result.
+
+## Publishing (Vercel, linked to GitHub)
+
+Vercel builds the site from the source every time GitHub changes. So:
+
+1. Open the folder in **GitHub Desktop** (or use `git`), commit, and **Push**.
+2. Vercel picks it up and publishes in about a minute.
+
+Do **not** use GitHub's "Add files via upload" button for updates. It only adds
+files, it never removes old ones, so leftovers from earlier versions pile up
+and break or change the build. A push keeps GitHub identical to this folder.
+
+Never upload `node_modules/`, `.next/` or `out/` — they are made by the build
+and are listed in `.gitignore` so git skips them.
+
+## Rebuilding `site/` yourself (optional)
 
 ```bash
 npm install
-npm run dev          # http://localhost:3000
-npm run build && npm start
+npm run dev          # preview at http://localhost:3000
+npm run build        # writes the plain-HTML site to out/ — copy it to site/
 ```
 
-Node 20+. No environment variables are required to run.
+Node 20+. No environment variables are needed. The pages use root paths
+(`/rooms`, `/_next/...`), so open `site/` through a web host or a local server,
+not by double-clicking `index.html`.
 
 ---
 
@@ -211,32 +242,7 @@ in Hero.tsx and a new `-lit` version of it.
 
 ---
 
-## Verifying it
-
-```bash
-npx playwright install chromium   # once
-npm run build && npm start        # in one terminal
-npm run verify                    # in another
-```
-
-| Script | What it proves |
-|---|---|
-| `verify:overflow` | No horizontal overflow at 320/390/1440, exactly one `h1` per page, no console errors, 404 returns 404 — across 11 routes, including a reduced-motion pass |
-| `verify:text` | Rendered text is byte-identical with JavaScript on and off |
-| `verify:a11y` | Zero axe violations (WCAG 2.0/2.1/2.2 A + AA, plus best-practice) on 9 routes |
-| `verify:keyboard` | 45 tab stops, every one with a visible focus ring, none off-screen |
-
-All four pass on this build.
-
-Measured on the home page, desktop viewport, same scripted scroll:
-
-| | before | after |
-|---|---|---|
-| Frame rate | 12 fps | **60 fps** |
-| Frame rate, 4x CPU throttle | 5 fps | **30 fps** |
-| Main-thread work per scroll | 8.5 s | **2.4 s** |
-| Style recalculation per scroll | 6.1 s | **~0 s** |
-| Blocking time on load (4x CPU) | 1490 ms | **1165 ms** |
+## Notes from testing
 
 Reveals are hidden with `opacity`, never `visibility: hidden` — the latter
 takes an element out of the accessibility tree, which silently dropped every

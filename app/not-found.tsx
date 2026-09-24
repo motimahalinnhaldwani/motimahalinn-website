@@ -16,8 +16,8 @@ export default function NotFound() {
         <Button href="/rooms" variant="ghost">
           Rooms
         </Button>
-        <Button href="/journeys" variant="ghost">
-          Journeys
+        <Button href="/dining/restaurant" variant="ghost">
+          Restaurant
         </Button>
       </div>
     </section>

@@ -1,11 +1,14 @@
 import type { NextConfig } from "next";
 
+/*
+ * `output: "export"` turns the whole site into plain files (index.html,
+ * CSS, JS, images) in the `out` folder when you run `npm run build`.
+ * Vercel serves that folder as-is; any other host can too.
+ */
 const nextConfig: NextConfig = {
+  output: "export",
   reactStrictMode: true,
-  images: {
-    formats: ["image/avif", "image/webp"],
-    deviceSizes: [360, 480, 640, 828, 1080, 1280, 1920],
-  },
+  images: { unoptimized: true },
 };
 
 export default nextConfig;

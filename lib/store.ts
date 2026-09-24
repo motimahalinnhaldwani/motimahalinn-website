@@ -37,7 +37,6 @@ type UIState = {
   audioOn: boolean;
   navOpen: boolean;
   cursorMode: CursorMode;
-  pastHero: boolean;
 
   setTier: (t: Tier) => void;
   setReducedMotion: (v: boolean) => void;
@@ -45,7 +44,6 @@ type UIState = {
   toggleAudio: () => void;
   setNavOpen: (v: boolean) => void;
   setCursorMode: (m: CursorMode) => void;
-  setPastHero: (v: boolean) => void;
 };
 
 export const useUI = create<UIState>((set) => ({
@@ -55,7 +53,6 @@ export const useUI = create<UIState>((set) => ({
   audioOn: false,
   navOpen: false,
   cursorMode: "default",
-  pastHero: false,
 
   setTier: (tier) => set({ tier }),
   setReducedMotion: (reducedMotion) => set({ reducedMotion }),
@@ -72,5 +69,4 @@ export const useUI = create<UIState>((set) => ({
     }),
   setNavOpen: (navOpen) => set({ navOpen }),
   setCursorMode: (cursorMode) => set({ cursorMode }),
-  setPastHero: (pastHero) => set({ pastHero }),
 }));

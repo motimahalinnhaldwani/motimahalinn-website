@@ -21,7 +21,7 @@ export default function AipanThreshold({
   label?: string;
   className?: string;
 }) {
-  const ref = useInView<HTMLDivElement>("0px 0px -12% 0px");
+  const ref = useInView<HTMLDivElement>({ rootMargin: "0px 0px -12% 0px" });
 
   return (
     <div

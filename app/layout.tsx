@@ -6,7 +6,6 @@ import { hotelSchema, localBusinessSchema } from "@/lib/seo";
 import JsonLd from "@/components/ui/JsonLd";
 import Nav from "@/components/ui/Nav";
 import Footer from "@/components/ui/Footer";
-import BookingBar from "@/components/ui/BookingBar";
 import RiverProgress from "@/components/ui/RiverProgress";
 import SmoothScroll from "@/components/motion/SmoothScroll";
 import MagneticCursor from "@/components/motion/MagneticCursor";
@@ -15,18 +14,18 @@ import { TransitionProvider } from "@/components/motion/PageTransition";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Haldwani, at the gateway to Kumaon`,
+    default: `${site.name} — Three-Star Hotel in Haldwani`,
     template: `%s · ${site.name}`,
   },
   description: site.description,
   keywords: [
     "hotel in Haldwani",
+    "hotel near Haldwani bus stand",
     "hotel near Haldwani railway station",
-    "hotels near Kainchi Dham",
-    "where to stay before Nainital",
-    "hotel Haldwani bus stand",
+    "hotel near Kathgodam",
     "Haldwani hotel with restaurant",
-    "best restaurant in Haldwani",
+    "restaurant in Haldwani",
+    "where to stay before Nainital",
   ],
   alternates: {
     canonical: "/",
@@ -37,7 +36,7 @@ export const metadata: Metadata = {
     locale: "en_IN",
     siteName: site.name,
     title: `${site.name} — Haldwani`,
-    description: site.tagline,
+    description: site.description,
     url: site.url,
   },
   twitter: { card: "summary_large_image" },
@@ -45,7 +44,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#0F0E0C",
+  themeColor: "#161617",
   colorScheme: "dark",
   width: "device-width",
   initialScale: 1,
@@ -80,7 +79,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-sm focus:bg-brass focus:px-4 focus:py-2 focus:text-ink"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-sm focus:bg-gold focus:px-4 focus:py-2 focus:text-charcoal"
         >
           Skip to content
         </a>
@@ -99,7 +98,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 permanently covers the end of the page. Always present, so it
                 cannot cause a layout shift when the bar docks. */}
             <div aria-hidden="true" className="h-20 lg:h-28" />
-            <BookingBar />
             <MagneticCursor />
           </SmoothScroll>
         </TransitionProvider>

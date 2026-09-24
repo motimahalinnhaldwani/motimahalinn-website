@@ -12,7 +12,6 @@ export default function Nav() {
   const pathname = usePathname();
   const navOpen = useUI((s) => s.navOpen);
   const setNavOpen = useUI((s) => s.setNavOpen);
-  const pastHero = useUI((s) => s.pastHero);
 
   useEffect(() => {
     setNavOpen(false);
@@ -31,8 +30,7 @@ export default function Nav() {
 
   return (
     <header
-      data-scrolled={pastHero || navOpen}
-      className="fixed inset-x-0 top-0 z-50 transition-colors duration-500 data-[scrolled=true]:border-b data-[scrolled=true]:border-brass/15 data-[scrolled=true]:bg-ink/92"
+      className="fixed inset-x-0 top-0 z-50 border-b border-brass/15 bg-ink/92 transition-colors duration-500"
     >
       <div className="shell flex items-center justify-between gap-6 py-4 sm:py-6">
         <TLink
@@ -45,8 +43,13 @@ export default function Nav() {
             className="h-7 w-7 text-brass transition-transform duration-700 group-hover:rotate-45"
             strokeWidth={1.4}
           />
-          <span className="whitespace-nowrap font-display text-base leading-none tracking-tight sm:text-xl">
-            Moti Mahal <span className="text-brass">Inn</span>
+          <span className="flex flex-col">
+            <span className="whitespace-nowrap font-display text-base leading-none tracking-tight sm:text-xl">
+              Moti Mahal <span className="text-brass">Inn</span>
+            </span>
+            <span className="mt-1 hidden whitespace-nowrap text-[0.5625rem] uppercase tracking-[0.26em] text-mist/70 sm:block">
+              {site.kinds}
+            </span>
           </span>
         </TLink>
 
@@ -74,9 +77,9 @@ export default function Nav() {
           </span>
           <TLink
             href="/book"
-            className="hidden rounded-sm border border-brass/45 px-4 py-2 text-[0.75rem] uppercase tracking-[0.14em] text-rice transition-colors hover:bg-brass hover:text-ink sm:inline-flex"
+            className="hidden rounded-sm bg-gold px-4 py-2 text-[0.75rem] font-medium uppercase tracking-[0.14em] text-charcoal transition-colors hover:bg-haldu sm:inline-flex"
           >
-            Book
+            Book direct · best rate
           </TLink>
           <button
             type="button"
@@ -118,9 +121,9 @@ export default function Nav() {
           ))}
           <TLink
             href="/book"
-            className="mt-6 inline-flex w-fit rounded-sm bg-brass px-6 py-3 text-[0.8125rem] uppercase tracking-[0.14em] text-ink"
+            className="mt-6 inline-flex w-fit rounded-sm bg-gold px-6 py-3 text-[0.8125rem] uppercase tracking-[0.14em] text-charcoal"
           >
-            Check availability
+            Book direct · best rate
           </TLink>
           <CallCTA className="mt-6" />
         </nav>

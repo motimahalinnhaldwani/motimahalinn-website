@@ -6,88 +6,70 @@ import {
   useContext,
   useEffect,
   useRef,
-  useState,
   type ReactNode,
 } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { prefersReducedMotion } from "@/lib/tier";
-import { AipanMotif, belPath } from "@/components/ui/AipanMotif";
 
 /**
- * §5.7 — an aipan motif draws across the viewport in geru, holds 120ms, then
- * erases to reveal the new route. About 700ms end to end.
+ * A quiet page change: the page settles out, a hairline of brass runs along the
+ * top while the next one loads, and the new page rises in. No curtain.
  *
- * Implemented as a navigation gate rather than an exit animation, because the
- * App Router swaps the tree the moment the route resolves and there is nothing
- * left to animate out by then.
+ * It is a navigation gate rather than an exit animation, because the App Router
+ * swaps the tree the moment the route resolves and there is nothing left to
+ * animate out by then. The phase lives on <html data-route>, so CSS does the rest.
  */
 
 type Ctx = { navigate: (href: string) => void };
 const TransitionCtx = createContext<Ctx>({ navigate: () => {} });
 
-const COVER = 340;
-const HOLD = 120;
-const REVEAL = 340;
+const LEAVE = 240;
+const ENTER = 650;
+
+function setPhase(phase: "leave" | "enter" | null) {
+  const d = document.documentElement;
+  if (phase) d.dataset.route = phase;
+  else delete d.dataset.route;
+}
 
 export function TransitionProvider({ children }: { children: ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
-  const [phase, setPhase] = useState<"idle" | "cover" | "hold" | "reveal">("idle");
-  const pending = useRef<string | null>(null);
+  const from = useRef<string | null>(null);
 
   const navigate = useCallback(
     (href: string) => {
       if (href === pathname) return;
-      if (prefersReducedMotion()) {
+      // Same page, different hash or query: nothing to transition.
+      if ((href.split(/[?#]/)[0] || pathname) === pathname || prefersReducedMotion()) {
         router.push(href);
         return;
       }
-      pending.current = href;
-      setPhase("cover");
+      from.current = pathname;
+      setPhase("leave");
+      window.setTimeout(() => router.push(href), LEAVE);
+      // Never strand the page faded out if the navigation stalls or fails.
       window.setTimeout(() => {
-        setPhase("hold");
-        router.push(href);
-      }, COVER);
+        if (document.documentElement.dataset.route === "leave") setPhase(null);
+      }, 4000);
     },
     [pathname, router],
   );
 
-  /* The new route has painted — pull the curtain back. */
+  /* The new route has rendered — bring it in, then get out of the way. */
   useEffect(() => {
-    if (phase !== "hold") return;
-    const id = window.setTimeout(() => setPhase("reveal"), HOLD);
+    if (from.current === null || pathname === from.current) return;
+    from.current = null;
+    setPhase("enter");
+    const id = window.setTimeout(() => setPhase(null), ENTER);
     return () => window.clearTimeout(id);
-  }, [phase, pathname]);
-
-  useEffect(() => {
-    if (phase !== "reveal") return;
-    const id = window.setTimeout(() => {
-      setPhase("idle");
-      pending.current = null;
-    }, REVEAL);
-    return () => window.clearTimeout(id);
-  }, [phase]);
+  }, [pathname]);
 
   return (
     <TransitionCtx.Provider value={{ navigate }}>
       {children}
-      <div
-        className="route-veil"
-        data-phase={phase}
-        aria-hidden="true"
-        role="presentation"
-      >
-        <svg
-          viewBox="0 0 1200 40"
-          preserveAspectRatio="none"
-          className="route-veil-bel"
-          focusable="false"
-        >
-          <path d={belPath(1200, 11, 9)} fill="none" stroke="currentColor" strokeWidth={1.2} />
-        </svg>
-        <AipanMotif variant="chowki" className="route-veil-motif" strokeWidth={1} />
-      </div>
+      <div className="route-line" aria-hidden="true" />
     </TransitionCtx.Provider>
   );
 }

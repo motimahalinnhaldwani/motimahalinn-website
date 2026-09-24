@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import PageHeader from "@/components/ui/PageHeader";
 import WhatsAppCTA, { CallCTA } from "@/components/ui/WhatsAppCTA";
+import { generalHref } from "@/lib/whatsapp";
 import JsonLd from "@/components/ui/JsonLd";
 import AipanThreshold from "@/components/motion/AipanThreshold";
 import MapEmbed from "@/components/ui/MapEmbed";
@@ -10,18 +11,18 @@ import { breadcrumbSchema, faqSchema, distanceFaqs } from "@/lib/seo";
 export const metadata: Metadata = {
   title: "Contact and directions",
   description:
-    "Moti Mahal Inn, Nainital Road, opposite SDM Court, Haldwani 263139. Two hundred metres from the bus stand, 750 m from the railway station, 6.2 km from Kathgodam.",
+    "Moti Mahal Inn, Nainital Road, opposite SDM Court, Haldwani 263139. 300 m from the bus station, 1 km from the railway station, 6.2 km from Kathgodam.",
   alternates: { canonical: "/contact" },
 };
 
 const arrivals = [
   {
-    from: "From the bus stand",
-    body: "Come out of the main gate and turn right onto Nainital Road. Three minutes on foot, past the SDM Court gate. If you have luggage, any auto will do it for twenty rupees and you will feel silly about it.",
+    from: "From the bus station",
+    body: "Come out of the main gate and turn right onto Nainital Road. Three hundred metres — about four minutes on foot, past the SDM Court gate. If you have luggage, any auto will do it for twenty rupees and you will feel silly about it.",
   },
   {
     from: "From Haldwani railway station",
-    body: "Seven hundred and fifty metres. Turn left out of the station and stay on the main road. Ten minutes walking, three by auto. Trains from Delhi and Lucknow come in here.",
+    body: "One kilometre. Turn left out of the station and stay on the main road. About twelve minutes walking, five by auto. Trains from Delhi and Lucknow come in here.",
   },
   {
     from: "From Kathgodam railway station",
@@ -29,11 +30,11 @@ const arrivals = [
   },
   {
     from: "From Pantnagar Airport",
-    body: "Thirty-two and a half kilometres, about fifty minutes. Taxis wait outside arrivals. Tell us your flight and we will have one there instead.",
+    body: "Thirty-two and a half kilometres, about fifty minutes. Taxis wait outside arrivals — or ask us and we will arrange your pickup and drop.",
   },
   {
     from: "Driving",
-    body: "NH-87 from Rudrapur and Rampur. We are on the left as the road begins to climb towards Nainital, opposite the SDM Court. Parking is on site and free for guests.",
+    body: "NH-87 from Rudrapur and Rampur. We are on the left as the road begins to climb towards Nainital, opposite the SDM Court. Parking on site is free for guests.",
   },
 ];
 
@@ -43,7 +44,7 @@ export default function ContactPage() {
       <PageHeader
         eyebrow="Finding us"
         title="Opposite the SDM Court, on the road that goes up."
-        lede="Moti Mahal Inn sits on Nainital Road at the point where Haldwani stops being a plains town and starts being the way into Kumaon. Everything below is walking distance."
+        lede="Moti Mahal Inn sits on Nainital Road at the point where Haldwani stops being a plains town and starts being the way into Kumaon. The bus and railway stations are both walking distance."
         motif="jyoti"
         trail={[
           { name: "Home", href: "/" },
@@ -81,13 +82,7 @@ export default function ContactPage() {
 
           <div className="mt-7 flex flex-col items-start gap-4">
             <CallCTA />
-            <a
-              href={`mailto:${site.email}`}
-              className="text-[0.8125rem] text-rice/70 underline decoration-brass/40 underline-offset-4 hover:text-rice"
-            >
-              {site.email}
-            </a>
-            <WhatsAppCTA ctx={{ intent: "general" }} label="Message the desk" />
+            <WhatsAppCTA href={generalHref} label="WhatsApp the desk" variant="ghost" />
           </div>
 
           <ul className="mt-10 space-y-3">
@@ -101,10 +96,6 @@ export default function ContactPage() {
 
           <h3 className="eyebrow mt-10">Hours</h3>
           <ul className="mt-4 space-y-2 text-sm">
-            <li className="flex items-baseline justify-between gap-3">
-              <span className="text-mist/70">Reception</span>
-              <span className="text-brass">24 hours</span>
-            </li>
             {meals.map((m) => (
               <li key={m.label} className="flex items-baseline justify-between gap-3">
                 <span className="text-mist/70">{m.label}</span>
@@ -114,14 +105,14 @@ export default function ContactPage() {
               </li>
             ))}
             <li className="flex items-baseline justify-between gap-3">
-              <span className="text-mist/70">Room service</span>
-              <span className="text-brass">24 hours</span>
+              <span className="text-mist/70">Front desk &amp; room service</span>
+              <span className="text-brass">24/7</span>
             </li>
           </ul>
 
           <p className="mt-8 text-[0.8125rem] text-mist/65">
-            Check in from <span className="tnum">{site.checkIn}</span> · Check out by{" "}
-            <span className="tnum">{site.checkOut}</span>
+            Check in from <span className="tnum">{site.checkInText}</span> · Check out by{" "}
+            <span className="tnum">{site.checkOutText}</span>
           </p>
         </div>
       </section>
@@ -134,7 +125,7 @@ export default function ContactPage() {
         </div>
         <p className="mt-4 text-[0.8125rem] text-mist/65">
           <a
-            href={`https://www.google.com/maps/search/?api=1&query=${site.geo.lat},${site.geo.lng}`}
+            href={site.mapsUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-brass underline underline-offset-4"

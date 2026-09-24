@@ -7,7 +7,7 @@ import { images, pendingShots, type Shot } from "@/content/images";
 export const metadata: Metadata = {
   title: "Gallery",
   description:
-    "Photographs of Moti Mahal Inn, Haldwani — rooms, corridors, the restaurant and the café. Shown at the resolution they were taken at, with nothing stretched.",
+    "Photographs of Moti Mahal Inn, Haldwani — rooms, corridors, the lift lobby and the restaurant. Shown at the resolution they were taken at, with nothing stretched.",
   alternates: { canonical: "/gallery" },
 };
 
@@ -16,6 +16,19 @@ const supplied: Shot[] = [
   images.deluxeEvening,
   images.corridorDoors,
   images.corridorFrames,
+  images.roomTealTv,
+  images.roomOrangeHeadboard,
+  images.roomGreyHeadboard,
+  images.roomMarbleHeadboard,
+  images.roomWoodHeadboard,
+  images.roomBrownMarble,
+  images.roomTwinBeds,
+  images.bathroomGreyStone,
+  images.bathroomWhite,
+  images.liftLobby,
+  images.corridorTiledRunner,
+  images.corridorRoom101,
+  images.corridorEvening,
 ];
 
 export default function GalleryPage() {
