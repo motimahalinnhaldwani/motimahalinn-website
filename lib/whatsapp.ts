@@ -52,8 +52,26 @@ export function bookingMessage(b: Booking = {}): string {
   return lines.join("\n");
 }
 
-export const whatsappHref = (text: string) =>
-  `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(text)}`;
+/** What the guest is asking about. Booking fields present → a booking message. */
+export type EnquiryContext = Booking & { intent?: string; extra?: string };
+
+const opener: Record<string, string> = {
+  stay: "I'd like to ask about a room.",
+  table: "I'd like to reserve a table at the restaurant.",
+  cab: "I'd like to arrange a cab",
+  hamper: "I'd like to order a chocolate hamper:",
+  general: "I have a question.",
+};
+
+export function enquiryMessage(ctx: EnquiryContext = {}): string {
+  const { intent = "general", extra, ...booking } = ctx;
+  if (Object.values(booking).some((v) => v !== undefined && v !== "")) return bookingMessage(booking);
+  const line = opener[intent] ?? opener.general;
+  return `Hi ${site.name}, ${line}${extra ? ` ${extra}` : ""}`.trim();
+}
+
+export const whatsappHref = (ctx: string | EnquiryContext = {}) =>
+  `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(typeof ctx === "string" ? ctx : enquiryMessage(ctx))}`;
 
 export const bookingHref = (b: Booking = {}) => whatsappHref(bookingMessage(b));
 
